@@ -2,7 +2,6 @@ import React from 'react';
 import {Link, useNavigate} from "react-router";
 import {useDispatch} from "react-redux";
 import useInput from "../hooks/useInput.jsx";
-import {asyncRegisterUser} from "../states/users/action.js";
 import {asyncSetAuthUser} from "../states/authUser/action.js";
 
 function LoginPage() {
@@ -20,7 +19,7 @@ function LoginPage() {
     }
 
     return (
-        <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+        <div className="bg-gray-50 flex items-center justify-center p-4">
             <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8 w-full max-w-md">
                 {/* Header */}
                 <div className="text-center mb-8">

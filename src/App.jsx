@@ -12,14 +12,14 @@ function App() {
   return (
       <Routes>
           <Route element={<MainLayout />}>
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/register" element={<RegisterPage />} />
               <Route path="/" element={<HomePage />} />
               <Route path="/leaderboard" element={<LeaderboardPage />} />
               <Route path="/threads/:id" element={<DetailPage />} />
               <Route path="/threads/new" element={<AddThreadPage />} />
               <Route path="/users/me" element={<ProfilePage />} />
           </Route>
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage />} />
       </Routes>
   );
 }

@@ -1,94 +1,41 @@
 
-import React from 'react';
+import React from "react";
 import ThreadList from "../components/ThreadList.jsx";
 import {Link} from "react-router";
+import {useDispatch, useSelector} from "react-redux";
+import {asyncPopulateThreads} from "../states/threads/action.js";
+import {asyncPopulateUsers} from "../states/users/action.js";
 
 function HomePage() {
-    const threads = [
-        {
-            id: "thread-1",
-            title: "Thread Pertama",
-            body: "Ini adalah thread pertama",
-            category: "General",
-            createdAt: "2021-06-21T07:00:00.000Z",
-            owner: {
-                "id": "users-1",
-                "name": "John Doe",
-                "avatar": "https://generated-image-url.jpg"
-            },
-            upVotesBy: ["user-8", "user-10"],
-            downVotesBy: ["user-11", "user-12"],
-            totalComments: 2
-        },
-        {
-            id: "thread-2",
-            title: "Thread Kedua",
-            body: "Ini adalah thread kedua",
-            category: "Programming",
-            createdAt: "2021-06-21T07:00:00.000Z",
-            owner: {
-                "id": "users-2",
-                "name": "Eric Smith",
-                "avatar": "https://generated-image-url.jpg"
-            },
-            upVotesBy: ["user-7", "user-12", "user-13"],
-            downVotesBy: ["user-14"],
-            totalComments: 3
-        },
-        {
-            id: "thread-3",
-            title: "Thread Ketiga",
-            body: "Ini adalah thread ketiga",
-            category: "Design",
-            createdAt: "2021-06-21T07:00:00.000Z",
-            owner: {
-                "id": "users-3",
-                "name": "Sara Jones",
-                "avatar": "https://generated-image-url.jpg"
-            },
-            upVotesBy: ["user-7"],
-            downVotesBy: ["user-14", "user-12", "user-13"],
-            totalComments: 1
-        },
-        {
-            id: "thread-4",
-            title: "Thread Keempat",
-            body: "Ini adalah thread keempat",
-            category: "Drawing",
-            createdAt: "2021-06-21T07:00:00.000Z",
-            owner: {
-                "id": "users-4",
-                "name": "Clara Voyger",
-                "avatar": "https://generated-image-url.jpg"
-            },
-            upVotesBy: ["user-7"],
-            downVotesBy: ["user-14", "user-12", "user-13"],
-            totalComments: 1
-        },
-        {
-            id: "thread-5",
-            title: "Thread Kelima",
-            body: "Ini adalah thread kelima",
-            category: "Structure",
-            createdAt: "2021-06-21T07:00:00.000Z",
-            owner: {
-                "id": "users-5",
-                "name": "Fernando Perez",
-                "avatar": "https://generated-image-url.jpg"
-            },
-            upVotesBy: ["user-1"],
-            downVotesBy: [],
-            totalComments: 1
-        },
-    ];
-
+    const threads = useSelector((state) => state.threads) ?? [];
+    const users = useSelector((state) => state.users) ?? [];
+    const authUser = useSelector((state) => state.authUser) ?? null;
+    const dispatch = useDispatch();
     const [selectedValue, setSelectedValue] = React.useState("all");
+
+    React.useEffect(() => {
+        dispatch(asyncPopulateThreads());
+        dispatch(asyncPopulateUsers());
+    }, [dispatch])
 
     const handleChange = (e) => {
         setSelectedValue(e.target.value);
-        console.log('Selected:', e.target.value);
-        // Do something with the value
     };
+
+    if (threads.length === 0) {
+        return <div>Loading...</div>
+    }
+
+    const threadList = threads.map((thread) => (
+        {
+            ...thread,
+            owner: users.find((user) => user.id === thread.ownerId)
+        }
+    ))
+
+    const categoryList = [...new Set(threads.map(thread => thread.category))];
+
+    const filteredThreads = selectedValue === "all" ? threadList : threadList.filter(thread => thread.category.toLowerCase() === selectedValue);
 
     return (
         <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 mt-16">
@@ -97,16 +44,23 @@ function HomePage() {
                     <h1 className="text-3xl font-bold text-gray-900 mb-2">Discussions</h1>
                     <p className="text-gray-600">Join the conversation with the community.</p>
                 </div>
-                <Link className="inline-flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg font-medium transition-colors shadow-sm"
-                   data-id="element-107" to="/threads/new">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                         stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
-                         className="lucide lucide-plus h-4 w-4" aria-hidden="true" data-id="element-108">
-                        <path d="M5 12h14"></path>
-                        <path d="M12 5v14"></path>
-                    </svg>
-                    New Thread
-                </Link>
+                {
+                    authUser ? (
+                        <Link to="/threads/new" className="inline-flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg font-medium transition-colors shadow-sm" data-id="element-107">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                 stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+                                 className="lucide lucide-plus h-4 w-4" aria-hidden="true" data-id="element-108">
+                                <path d="M5 12h14"></path>
+                                <path d="M12 5v14"></path>
+                            </svg>
+                            New Thread
+                        </Link>
+                    ) : (
+                        <Link to="/login" className="inline-flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg font-medium transition-colors shadow-sm">
+                            Login to Create New Thread
+                        </Link>
+                    )
+                }
             </div>
             {/* Filters */}
             <div className="flex items-center justify-between mb-6">
@@ -132,9 +86,9 @@ function HomePage() {
                             onChange={handleChange}
                         >
                             <option value="all">All Categories</option>
-                            <option value="programming">Programming</option>
-                            <option value="design">Design</option>
-                            <option value="structure">Structure</option>
+                            {categoryList.map((category, index) => (
+                                <option key={index} value={category.toLowerCase()}>{category}</option>
+                            ))}
                         </select>
 
                         <svg
@@ -151,10 +105,6 @@ function HomePage() {
                             />
                         </svg>
                     </div>
-
-                    <p className="mt-2 text-sm text-gray-600">
-                        Selected: {selectedValue}
-                    </p>
                 </div>
                 <div className="flex items-center bg-white p-1 rounded-lg border border-slate-200 shadow-sm"
                      data-id="element-164">
@@ -183,14 +133,18 @@ function HomePage() {
             </div>
 
             {/* thread List */}
-            <ThreadList threads={threads}/>
+            <ThreadList threads={filteredThreads}/>
 
             {/* Load More */}
-            <div className="mt-8 text-center">
-                <button className="px-6 py-3 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 font-medium">
-                    Load more threads
-                </button>
-            </div>
+            {
+                filteredThreads.length > 6 && (
+                    <div className="mt-8 text-center">
+                        <button className="px-6 py-3 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 font-medium">
+                            Load more threads
+                        </button>
+                    </div>
+                )
+            }
         </main>
     );
 }

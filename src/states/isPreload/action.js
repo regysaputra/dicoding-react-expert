@@ -1,4 +1,5 @@
 import {setAuthUserActionCreator} from "../authUser/action.js";
+import api from "../../utils/api.js";
 
 const ActionType = {
   SET_IS_PRELOAD: "SET_IS_PRELOAD",
@@ -18,6 +19,7 @@ function asyncPreloadProcess() {
         try {
             // preload process
             const authUser = await api.getOwnProfile();
+            console.log("AUTH USER : ", authUser);
             dispatch(setAuthUserActionCreator(authUser));
         } catch (error) {
             // fallback process

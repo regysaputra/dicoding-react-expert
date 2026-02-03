@@ -23,16 +23,27 @@ function addThreadActionCreator(thread) {
     };
 }
 
-
-
 function asyncPopulateThreads() {
     return async (dispatch) => {
         try {
             const threads = await api.getAllThread();
 
+            // const threadPromises = threads.map(async (thread) => {
+            //     // Call the API for this specific thread
+            //     const detail = await api.getThreadDetail(thread.id);
+            //
+            //     // Return a NEW object merging the old thread data with the new owner
+            //     return {
+            //         ...thread,
+            //         owner: detail.owner // Assuming api response has an 'owner' property
+            //     };
+            // });
+            //
+            // // 2. Wait for ALL promises to resolve
+            // const threadsWithOwners = await Promise.all(threadPromises);
             dispatch(receiveThreadsActionCreator(threads));
         } catch (error) {
-            console.error(error.message);
+            alert(error.message);
         }
     }
 }

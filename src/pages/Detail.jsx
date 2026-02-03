@@ -1,47 +1,67 @@
 import React from 'react';
-import {useNavigate, useParams} from "react-router";
-import {FaRegThumbsDown, FaRegThumbsUp, FaThumbsUp} from "react-icons/fa";
+import {Link, useNavigate, useParams} from "react-router";
+import {FaRegThumbsDown, FaRegThumbsUp, FaThumbsDown, FaThumbsUp} from "react-icons/fa";
 import Comment from "../components/Comment.jsx";
 import {showFormattedDate} from "../utils/index.js";
+import {useDispatch, useSelector} from "react-redux";
+import {
+    asyncAddComment,
+    asyncReceiveThreadDetail,
+    asyncToggleDownVoteThread, asyncToggleNeutralizeVoteThread,
+    asyncToggleUpVoteThread
+} from "../states/threadDetail/action.js";
+import useInput from "../hooks/useInput.jsx";
 
 function DetailPage() {
     const { id } = useParams();
     const navigate = useNavigate();
-    const thread = {
-        id: "thread-1",
-        title: "Thread Pertama",
-        body: "Ini adalah thread pertama",
-        category: "Programming",
-        createdAt: "2021-06-21T07:00:00.000Z",
-        owner: {
-            id: "users-1",
-            name: "John Doe",
-            avatar: "https://generated-image-url.jpg"
-        },
-        upVotesBy: ["user-2", "user-5"],
-        downVotesBy: ["user-1"],
-        comments: [
-            {
-                id: "comment-1",
-                content: "Ini adalah komentar pertama",
-                createdAt: "2021-06-21T07:00:00.000Z",
-                owner: {
-                    id: "users-1",
-                    name: "John Doe",
-                    avatar: "https://generated-image-url.jpg"
-                },
-                upVotesBy: ["user-2", "user-5"],
-                downVotesBy: ["user-1"]
-            }
-        ]
-    };
+    const threadDetail = useSelector((state) => state.threadDetail);
+    const [content, handleContent, resetContent] = useInput("");
+    const authUser = useSelector((state) => state.authUser);
+    const dispatch = useDispatch();
+
+    React.useEffect(() => {
+        dispatch(asyncReceiveThreadDetail(id));
+    }, [id, dispatch])
 
     function handleBackToPrevious() {
         navigate(-1);
     }
 
+    function handleUpVote() {
+        if (authUser) {
+            if (threadDetail?.upVotesBy.includes(authUser?.id)) {
+                dispatch(asyncToggleNeutralizeVoteThread(id))
+            } else {
+                dispatch(asyncToggleUpVoteThread(id));
+            }
+        }
+    }
+
+    function handleDownVote() {
+        if (authUser) {
+            if (threadDetail?.downVotesBy.includes(authUser?.id)) {
+                dispatch(asyncToggleNeutralizeVoteThread(id))
+            } else {
+                dispatch(asyncToggleDownVoteThread(id));
+            }
+        }
+    }
+
+    function handleSubmit(e) {
+        e.preventDefault();
+
+        dispatch(asyncAddComment(id, content));
+
+        resetContent("");
+    }
+
+    if (!threadDetail) {
+        return <div>Loading...</div>
+    }
+
     return (
-        <main className="max-w-4xl mx-auto px-6 py-8 mt-16">
+        <main className="max-w-4xl mx-auto px-6 py-8">
             <button
                 onClick={handleBackToPrevious}
                 className="flex items-center gap-2 bg-transparent border-none p-0 text-gray-600 hover:text-gray-900 underline-offset-4 hover:underline cursor-pointer mb-2"
@@ -56,36 +76,40 @@ function DetailPage() {
                 <div className="flex" data-id="element-292">
                     <div className="flex-1 p-6 md:p-8" data-id="element-295">
                         <div className="flex items-center space-x-3 mb-6" data-id="element-296">
-                            <img src={thread.owner.avatar} alt="Jordan Smith" className="w-10 h-10 rounded-full border border-slate-100" data-id="element-297"/>
+                            <img src={threadDetail?.owner.avatar} alt="Jordan Smith" className="w-10 h-10 rounded-full border border-slate-100" data-id="element-297"/>
                             <div data-id="element-298">
-                                <h1 className="text-2xl md:text-3xl font-bold text-slate-900 leading-tight" data-id="element-299">{thread.title}</h1>
+                                <h1 className="text-2xl md:text-3xl font-bold text-slate-900 leading-tight" data-id="element-299">{threadDetail?.title}</h1>
                                 <div className="flex items-center space-x-2 text-sm text-slate-500 mt-1" data-id="element-300">
-                                    <span className="font-medium text-slate-700" data-id="element-301">{thread.owner.name}</span>
-                                    <span data-id="element-302">•</span><span data-id="element-303">{showFormattedDate(thread.createdAt)}</span>
+                                    <span className="font-medium text-slate-700" data-id="element-301">{threadDetail?.owner.name}</span>
+                                    <span data-id="element-302">•</span><span data-id="element-303">{showFormattedDate(threadDetail?.createdAt)}</span>
                                 </div>
                             </div>
                         </div>
                         <div className="prose prose-slate max-w-none mb-8" data-id="element-304">
-                            <p className="text-lg text-slate-800 leading-relaxed" data-id="element-305">{thread.body}</p>
+                            <p className="text-lg text-slate-800 leading-relaxed" data-id="element-305">{threadDetail?.body}</p>
                         </div>
                         <div className="flex flex-wrap gap-2 mb-8" data-id="element-306">
-                            <span className="px-3 py-1 bg-slate-100 text-slate-600 text-xs font-bold uppercase tracking-wider rounded-full" data-id="element-307">{thread.category}</span>
+                            <span className="px-3 py-1 bg-slate-100 text-slate-600 text-xs font-bold uppercase tracking-wider rounded-full" data-id="element-307">{threadDetail?.category}</span>
                         </div>
                         <div className="flex items-center justify-between pt-6 border-t border-slate-100" data-id="element-308">
                             <div className="flex items-center space-x-6" data-id="element-309">
-                                <button className="flex items-center space-x-2 text-slate-500 hover:text-blue-600 transition-colors" data-id="element-310">
-                                    <FaRegThumbsUp className="w-5 h-5" />
-                                    <span className="font-medium" data-id="element-312">{thread.upVotesBy.length}</span>
+                                <button onClick={handleUpVote} className="flex items-center space-x-2 text-slate-500 hover:text-blue-600 transition-colors" data-id="element-310">
+                                    {
+                                        threadDetail?.upVotesBy.includes(authUser?.id) ? <FaThumbsUp className="w-5 h-5" /> : <FaRegThumbsUp className="w-5 h-5" />
+                                    }
+                                    <span className="font-medium" data-id="element-312">{threadDetail?.upVotesBy.length}</span>
                                 </button>
-                                <button className="flex items-center space-x-2 text-slate-500 hover:text-blue-600 transition-colors" data-id="element-310">
-                                    <FaRegThumbsDown className="w-5 h-5" />
-                                    <span className="font-medium" data-id="element-312">{thread.downVotesBy.length}</span>
+                                <button onClick={handleDownVote} className="flex items-center space-x-2 text-slate-500 hover:text-blue-600 transition-colors" data-id="element-310">
+                                    {
+                                        threadDetail?.downVotesBy.includes(authUser?.id) ? <FaThumbsDown className="w-5 h-5" /> : <FaRegThumbsDown className="w-5 h-5" />
+                                    }
+                                    <span className="font-medium" data-id="element-312">{threadDetail?.downVotesBy.length}</span>
                                 </button>
                                 <button className="flex items-center space-x-2 text-slate-500 hover:text-blue-600 transition-colors" data-id="element-310">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-message-circle w-5 h-5" aria-hidden="true" data-id="element-311">
                                         <path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"></path>
                                     </svg>
-                                    <span className="font-medium" data-id="element-312">{thread.comments.length} Comments</span>
+                                    <span className="font-medium" data-id="element-312">{threadDetail?.comments.length} Comments</span>
                                 </button>
                             </div>
                         </div>
@@ -93,24 +117,37 @@ function DetailPage() {
                 </div>
             </div>
 
-            <div className="mb-6">
-                <h2 className="text-xl font-bold mb-4">{thread.comments.length} Comments</h2>
-                <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-6">
-                <textarea
-                    placeholder="What are your thoughts?"
-                    className="w-full min-h-32 p-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-none"
-                ></textarea>
-                    <div className="flex justify-end mt-3">
-                        <button
-                            className="px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 font-medium">
-                            Post Comment
-                        </button>
+            {
+                authUser ? (
+                    <div className="mb-6">
+                        <h2 className="text-xl font-bold mb-4">{threadDetail?.comments.length} Comments</h2>
+                        <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-6">
+                    <textarea
+                        value={content}
+                        onChange={handleContent}
+                        placeholder="What are your thoughts?"
+                        className="w-full min-h-32 p-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-none"
+                    ></textarea>
+                            <div className="flex justify-end mt-3">
+                                <button
+                                    type="submit"
+                                    className="px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 font-medium">
+                                    Post Comment
+                                </button>
+                            </div>
+                        </form>
+                        <div className="space-y-4" data-id="element-313">
+                            {
+                                threadDetail?.comments.map(comment => <Comment key={comment.id} userId={authUser?.id} threadId={id} comment={comment}/>)
+                            }
+                        </div>
                     </div>
-                </div>
-                {
-                    thread.comments.map(comment => <Comment key={comment.id} comment={comment}/>)
-                }
-            </div>
+                ) : (
+                    <Link to="/login" className="inline-flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg font-medium transition-colors shadow-sm">
+                        Login to comment
+                    </Link>
+                )
+            }
         </main>
     );
 }

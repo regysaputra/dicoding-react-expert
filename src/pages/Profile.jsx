@@ -1,12 +1,15 @@
 import React from 'react';
+import {useSelector} from "react-redux";
 
 function ProfilePage() {
-    const user = {
-        id: "john_doe",
-        name: "John Doe",
-        email: "john@example.com",
-        avatar: "https://generated-image-url.jpg"
-    };
+    // const user = {
+    //     id: "john_doe",
+    //     name: "John Doe",
+    //     email: "john@example.com",
+    //     avatar: "https://generated-image-url.jpg"
+    // };
+
+    const authUser = useSelector((state) => state.authUser);
 
     return (
         <main
@@ -34,17 +37,17 @@ function ProfilePage() {
                                 className="h-24 w-24 sm:h-32 sm:w-32 rounded-full bg-indigo-600 flex items-center justify-center text-white text-3xl sm:text-4xl font-bold border-4 border-white shadow-lg"
                                 data-id="element-177"
                             >
-                                {(user.name)[0]}
+                                {(authUser.name)[0]}
                             </div>
                             <div className="text-center sm:text-left pb-2" data-id="element-178">
                                 <h1
                                     className="text-2xl font-bold text-gray-900"
                                     data-id="element-179"
                                 >
-                                    {user.name}
+                                    {authUser.name}
                                 </h1>
                                 <p className="text-gray-500" data-id="element-180">
-                                    @{user.id}
+                                    @{authUser.name.toLowerCase().replace(/\s/g, '')}
                                 </p>
                             </div>
                         </div>
@@ -101,8 +104,7 @@ function ProfilePage() {
                     </div>
                     <div className="mt-6 max-w-2xl" data-id="element-186">
                         <p className="text-gray-600" data-id="element-187">
-                            Full-stack developer passionate about React and TypeScript. Building
-                            better developer experiences one component at a time.
+                            'User description here.'
                         </p>
                         <div
                             className="flex flex-wrap items-center gap-4 mt-4 text-sm text-gray-500"
@@ -128,7 +130,7 @@ function ProfilePage() {
               <rect width={18} height={18} x={3} y={4} rx={2} />
               <path d="M3 10h18" />
             </svg>
-            Joined January 2024
+            Joined Month year
           </span>
                         </div>
                     </div>

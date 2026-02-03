@@ -19,15 +19,15 @@ const api = (() => {
         return localStorage.getItem('accessToken');
     }
 
-    async function register({ id, name, password }) {
+    async function register({ name, email, password }) {
         const response = await fetch(`${BASE_URL}/register`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                id,
                 name,
+                email,
                 password,
             }),
         });
@@ -44,14 +44,14 @@ const api = (() => {
         return user;
     }
 
-    async function login({ id, password }) {
+    async function login({ email, password }) {
         const response = await fetch(`${BASE_URL}/login`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                id,
+                email,
                 password,
             }),
         });
@@ -113,9 +113,9 @@ const api = (() => {
             throw new Error(message);
         }
 
-        const { data: { talks } } = responseJson;
+        const { data: { threads } } = responseJson;
 
-        return talks;
+        return threads;
     }
 
     async function getThreadDetail(id) {
@@ -129,9 +129,9 @@ const api = (() => {
             throw new Error(message);
         }
 
-        const { data: { talkDetail } } = responseJson;
+        const { data: { detailThread } } = responseJson;
 
-        return talkDetail;
+        return detailThread;
     }
 
     async function createThread({ title, body, category }) {
@@ -160,7 +160,7 @@ const api = (() => {
         return thread;
     }
 
-    async function createComment({ threadId, content }) {
+    async function createComment(threadId, content) {
         const response = await _fetchWithAuth(`${BASE_URL}/threads/${threadId}/comments`, {
             method: 'POST',
             headers: {

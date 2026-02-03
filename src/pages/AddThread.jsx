@@ -2,9 +2,12 @@ import React, { useState } from 'react';
 import { ArrowLeft, Bold, Italic, Link, Image } from 'lucide-react';
 import {useNavigate} from "react-router";
 import useInput from "../hooks/useInput.jsx";
+import {useDispatch} from "react-redux";
+import {asyncAddThread} from "../states/threads/action.js";
 
 export default function AddThreadPage() {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const [title, handleTitleChange] = useInput('');
     const [category, handleCategoryChange] = useInput('');
     const [body, handleBodyChange] = useInput('');
@@ -12,13 +15,12 @@ export default function AddThreadPage() {
     function handleSubmit(e) {
         e.preventDefault();
 
+        dispatch(asyncAddThread({ title, category, body }));
+        navigate("/");
     }
 
     function handleCancel() {
-        setTitle('');
-        setCategory('');
-        setTags('');
-        setContent('');
+        navigate("/");
     }
 
     function handleBackToPrevious() {
@@ -50,7 +52,7 @@ export default function AddThreadPage() {
                         </p>
                     </div>
 
-                    <div>
+                    <form onSubmit={handleSubmit}>
                         {/* Title field */}
                         <div className="mb-6">
                             <label className="block text-sm font-medium text-gray-900 mb-2">
@@ -109,7 +111,7 @@ export default function AddThreadPage() {
                                         </svg>
                                     </button>
                                 </div>
-                                <textarea id="content" rows="8" className="w-full p-4 text-gray-900 placeholder-gray-400 focus:outline-none resize-y min-h-[200px]" placeholder="Write your post content here..." data-id="element-94"></textarea>
+                                <textarea value={body} onChange={handleBodyChange} id="content" rows="8" className="w-full p-4 text-gray-900 placeholder-gray-400 focus:outline-none resize-y min-h-[200px]" placeholder="Write your post content here..." data-id="element-94"></textarea>
                             </div>
                         </div>
 
@@ -122,13 +124,13 @@ export default function AddThreadPage() {
                                 Cancel
                             </button>
                             <button
-                                onClick={handleSubmit}
+                                type="submit"
                                 className="px-6 py-2.5 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700 transition-colors"
                             >
                                 Publish Thread
                             </button>
                         </div>
-                    </div>
+                    </form>
                 </div>
             </div>
         </main>
