@@ -1,32 +1,32 @@
-import api from "../../utils/api.js";
+import api from '../../utils/api.js';
 
 const ActionType = {
-    RECEIVE_LEADERBOARD: 'RECEIVE_LEADERBOARD',
-}
+  RECEIVE_LEADERBOARD: 'RECEIVE_LEADERBOARD',
+};
 
 function receiveLeaderboardActionCreator(leaderboard) {
-    return {
-        type: ActionType.RECEIVE_LEADERBOARD,
-        payload: {
-            leaderboard,
-        },
-    };
+  return {
+    type: ActionType.RECEIVE_LEADERBOARD,
+    payload: {
+      leaderboard,
+    },
+  };
 }
 
 function asyncPopulateLeaderboard() {
-    return async (dispatch) => {
-        try {
-            const leaderboard = await api.getLeaderboard();
+  return async (dispatch) => {
+    try {
+      const leaderboard = await api.getLeaderboard();
 
-            dispatch(receiveLeaderboardActionCreator(leaderboard));
-        } catch (error) {
-            alert(error.message);
-        }
+      dispatch(receiveLeaderboardActionCreator(leaderboard));
+    } catch (error) {
+      alert(error.message);
     }
+  };
 }
 
 export {
-    ActionType,
-    receiveLeaderboardActionCreator,
-    asyncPopulateLeaderboard,
+  ActionType,
+  receiveLeaderboardActionCreator,
+  asyncPopulateLeaderboard,
 };

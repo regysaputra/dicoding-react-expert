@@ -1,50 +1,44 @@
-import api from "../../utils/api.js";
+import api from '../../utils/api.js';
 
 const ActionType = {
-    RECEIVE_USERS: 'RECEIVE_USERS',
-    RECEIVE_OWN_PROFILES: 'RECEIVE_OWN_PROFILES',
+  RECEIVE_USERS: 'RECEIVE_USERS',
+  RECEIVE_OWN_PROFILES: 'RECEIVE_OWN_PROFILES',
 };
 
 function receiveUsersActionCreator(users) {
-    return {
-        type: ActionType.RECEIVE_USERS,
-        payload: {
-            users,
-        },
-    };
+  return {
+    type: ActionType.RECEIVE_USERS,
+    payload: {
+      users,
+    },
+  };
 }
 
 function asyncRegisterUser({ name, email, password }) {
-    return async () => {
-        try {
-            await api.register({ name, email, password });
-        } catch (error) {
-            alert(error.message);
-        }
-    };
+  return async () => {
+    try {
+      await api.register({ name, email, password });
+    } catch (error) {
+      alert(error.message);
+    }
+  };
 }
 
 function asyncPopulateUsers() {
-    return async (dispatch) => {
-        try {
-            console.log("1. Fetching users..."); // Check if function starts
-            const users = await api.getAllUsers();
-            console.log("2. API Response:", users); // Check what the API actually returns
+  return async (dispatch) => {
+    try {
+      const users = await api.getAllUsers();
 
-            // Dispatch the action
-            const action = receiveUsersActionCreator(users);
-            console.log("3. Dispatching Action:", action);
-            dispatch(action);
-        } catch (error) {
-            console.error("API Error:", error); // Use console.error instead of alert to see details
-            alert(error.message);
-        }
+      dispatch(receiveUsersActionCreator(users));
+    } catch (error) {
+      alert(error.message);
     }
+  };
 }
 
 export {
-    ActionType,
-    receiveUsersActionCreator,
-    asyncRegisterUser,
-    asyncPopulateUsers,
+  ActionType,
+  receiveUsersActionCreator,
+  asyncRegisterUser,
+  asyncPopulateUsers,
 };
