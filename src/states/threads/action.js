@@ -1,8 +1,8 @@
-import api from '../../utils/api.js';
+import api from "../../utils/api.js";
 
 const ActionType = {
-  RECEIVE_THREADS: 'RECEIVE_THREADS',
-  ADD_THREAD: 'ADD_THREAD'
+  RECEIVE_THREADS: "RECEIVE_THREADS",
+  ADD_THREAD: "ADD_THREAD",
 };
 
 function receiveThreadsActionCreator(threads) {

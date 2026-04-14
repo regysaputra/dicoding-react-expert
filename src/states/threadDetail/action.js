@@ -1,14 +1,14 @@
-import api from '../../utils/api.js';
+import api from "../../utils/api.js";
 
 const ActionType = {
-  RECEIVE_THREAD_DETAIL: 'RECEIVE_THREAD_DETAIL',
-  ADD_COMMENT: 'ADD_COMMENT',
-  TOGGLE_UPVOTE_THREAD: 'TOGGLE_UPVOTE_THREAD',
-  TOGGLE_DOWNVOTE_THREAD: 'TOGGLE_DOWNVOTE_THREAD',
-  TOGGLE_NEUTRALIZEVOTE_THREAD: 'TOGGLE_NEUTRALIZEVOTE_THREAD',
-  TOGGLE_UPVOTE_COMMENT: 'TOGGLE_UPVOTE_COMMENT',
-  TOGGLE_DOWNVOTE_COMMENT: 'TOGGLE_DOWNVOTE_COMMENT',
-  TOGGLE_NEUTRALIZEVOTE_COMMENT: 'TOGGLE_NEUTRALIZEVOTE_COMMENT',
+  RECEIVE_THREAD_DETAIL: "RECEIVE_THREAD_DETAIL",
+  ADD_COMMENT: "ADD_COMMENT",
+  TOGGLE_UPVOTE_THREAD: "TOGGLE_UPVOTE_THREAD",
+  TOGGLE_DOWNVOTE_THREAD: "TOGGLE_DOWNVOTE_THREAD",
+  TOGGLE_NEUTRALIZEVOTE_THREAD: "TOGGLE_NEUTRALIZEVOTE_THREAD",
+  TOGGLE_UPVOTE_COMMENT: "TOGGLE_UPVOTE_COMMENT",
+  TOGGLE_DOWNVOTE_COMMENT: "TOGGLE_DOWNVOTE_COMMENT",
+  TOGGLE_NEUTRALIZEVOTE_COMMENT: "TOGGLE_NEUTRALIZEVOTE_COMMENT",
 };
 
 function receiveThreadDetailActionCreator(threadDetail) {
@@ -158,7 +158,9 @@ function asyncToggleUpVoteComment(threadId, commentId) {
       await api.upVoteComment(threadId, commentId);
     } catch (error) {
       alert(error.message);
-      dispatch(toggleNeutralizeVoteCommentActionCreator(authUser.id, commentId));
+      dispatch(
+        toggleNeutralizeVoteCommentActionCreator(authUser.id, commentId),
+      );
     }
   };
 }
@@ -172,7 +174,9 @@ function asyncToggleDownVoteComment(threadId, commentId) {
       await api.downVoteComment(threadId, commentId);
     } catch (error) {
       alert(error.message);
-      dispatch(toggleNeutralizeVoteCommentActionCreator(authUser.id, commentId));
+      dispatch(
+        toggleNeutralizeVoteCommentActionCreator(authUser.id, commentId),
+      );
     }
   };
 }

@@ -1,8 +1,8 @@
-import api from '../../utils/api.js';
+import api from "../../utils/api.js";
 
 const ActionType = {
-  RECEIVE_USERS: 'RECEIVE_USERS',
-  RECEIVE_OWN_PROFILES: 'RECEIVE_OWN_PROFILES',
+  RECEIVE_USERS: "RECEIVE_USERS",
+  RECEIVE_OWN_PROFILES: "RECEIVE_OWN_PROFILES",
 };
 
 function receiveUsersActionCreator(users) {

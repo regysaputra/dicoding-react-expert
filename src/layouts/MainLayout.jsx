@@ -1,10 +1,10 @@
-import React from 'react';
-import Header from '../components/Header.jsx';
-import Footer from '../components/Footer.jsx';
-import { Outlet, useNavigate } from 'react-router';
-import { useDispatch, useSelector } from 'react-redux';
-import { asyncPreloadProcess } from '../states/isPreload/action.js';
-import { asyncUnsetAuthUser } from '../states/authUser/action.js';
+import React from "react";
+import Header from "../components/Header.jsx";
+import Footer from "../components/Footer.jsx";
+import { Outlet, useNavigate } from "react-router";
+import { useDispatch, useSelector } from "react-redux";
+import { asyncPreloadProcess } from "../states/isPreload/action.js";
+import { asyncUnsetAuthUser } from "../states/authUser/action.js";
 
 function MainLayout() {
   const navigate = useNavigate();
@@ -18,7 +18,7 @@ function MainLayout() {
 
   function handleLogout() {
     dispatch(asyncUnsetAuthUser());
-    navigate('/login');
+    navigate("/login");
   }
 
   if (isPreload) {
@@ -26,7 +26,7 @@ function MainLayout() {
   }
 
   return (
-    <div className='min-h-screen bg-gray-50'>
+    <div className="min-h-screen bg-gray-50">
       <Header authUser={authUser} onLogout={handleLogout} />
       <Outlet />
       <Footer />

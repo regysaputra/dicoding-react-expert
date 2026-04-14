@@ -4,15 +4,15 @@ function showFormattedDate(dateString) {
   const diffInSeconds = Math.floor((now - past) / 1000);
 
   const units = [
-    { name: 'year', seconds: 31536000 },
-    { name: 'month', seconds: 2592000 },
-    { name: 'day', seconds: 86400 },
-    { name: 'hour', seconds: 3600 },
-    { name: 'minute', seconds: 60 },
-    { name: 'second', seconds: 1 },
+    { name: "year", seconds: 31536000 },
+    { name: "month", seconds: 2592000 },
+    { name: "day", seconds: 86400 },
+    { name: "hour", seconds: 3600 },
+    { name: "minute", seconds: 60 },
+    { name: "second", seconds: 1 },
   ];
 
-  const rtf = new Intl.RelativeTimeFormat('en', { numeric: 'auto' });
+  const rtf = new Intl.RelativeTimeFormat("en", { numeric: "auto" });
 
   for (const unit of units) {
     if (diffInSeconds >= unit.seconds) {
@@ -27,7 +27,9 @@ function validateProps(schema, props, componentName) {
 
   if (validationResult.error) {
     const { details } = validationResult.error;
-    details.forEach((error) => console.warn(`[${ componentName }] Validation Error: ${ error.message }`));
+    details.forEach((error) =>
+      console.warn(`[${componentName}] Validation Error: ${error.message}`),
+    );
   }
 
   return validationResult.value;

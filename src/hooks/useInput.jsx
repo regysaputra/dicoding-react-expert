@@ -1,14 +1,14 @@
-import React from 'react';
+import React from "react";
 
 function useInput() {
-  const [value, setValue] = React.useState('');
+  const [value, setValue] = React.useState("");
 
   function handleChange(e) {
     setValue(e.target.value);
   }
 
   function reset() {
-    setValue('');
+    setValue("");
   }
 
   return [value, handleChange, reset];
