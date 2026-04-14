@@ -48,7 +48,7 @@ function HomePage() {
             Join the conversation with the community.
           </p>
         </div>
-        { authUser && <CreateThreadLink /> }
+        {authUser && <CreateThreadLink />}
       </div>
       {/* Filters */}
       <div className="flex items-center justify-between mb-6">

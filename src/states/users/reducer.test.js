@@ -5,8 +5,8 @@ const initialState = [
     id: "john_doe",
     name: "John Doe",
     email: "john@example.com",
-    avatar: "https://generated-image-url.jpg"
-  }
+    avatar: "https://generated-image-url.jpg",
+  },
 ];
 
 describe("users reducer", () => {

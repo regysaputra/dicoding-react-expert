@@ -67,7 +67,10 @@ function threadDetailReducer(threadDetail = null, action = {}) {
               (id) => id !== action.payload.userId,
             );
 
-            const newDownVotesBy = [...comment.downVotesBy, action.payload.userId];
+            const newDownVotesBy = [
+              ...comment.downVotesBy,
+              action.payload.userId,
+            ];
 
             return {
               ...comment,

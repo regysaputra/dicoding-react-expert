@@ -1,4 +1,4 @@
-describe('Register spec', () => {
+describe("Register spec", () => {
   const testUser = {
     name: "John Doe",
     email: `logintester_${Date.now()}@gmail.com`,
@@ -7,17 +7,21 @@ describe('Register spec', () => {
 
   before(() => {
     // Seed db
-    cy.request('POST', 'https://forum-api.dicoding.dev/v1/register', testUser).then((response) => {
+    cy.request(
+      "POST",
+      "https://forum-api.dicoding.dev/v1/register",
+      testUser,
+    ).then((response) => {
       // Optional: Verify the database actually created the user
       expect(response.status).to.eq(201);
     });
   });
 
   beforeEach(() => {
-    cy.visit('http://localhost:5173/login');
+    cy.visit("http://localhost:5173/login");
   });
 
-  it('should display login page correctly', () => {
+  it("should display login page correctly", () => {
     cy.get('[data-cy="email"]').should("be.visible");
     cy.get('[data-cy="password"]').should("be.visible");
     cy.get('[data-cy="loginButton"]').should("be.visible");
@@ -45,6 +49,6 @@ describe('Register spec', () => {
 
     // Verify the browser actually redirected to the login route
     cy.url().should("include", "/");
-    cy.get('header').contains('Login').should('not.exist');
+    cy.get("header").contains("Login").should("not.exist");
   });
-})
+});

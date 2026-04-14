@@ -1,6 +1,7 @@
+import React from "react";
 import ThreadItem from "./ThreadItem.jsx";
-import {render, screen} from "@testing-library/react";
-import {BrowserRouter} from "react-router";
+import { render, screen } from "@testing-library/react";
+import { BrowserRouter } from "react-router";
 
 describe("ThreadItem component", () => {
   const mockThread = {
@@ -13,13 +14,8 @@ describe("ThreadItem component", () => {
       id: 99,
       name: "John Doe",
     },
-    upVotesBy: [
-      { id: 101 },
-      { id: 102 }
-    ],
-    downVotesBy: [
-      { id: 103 }
-    ],
+    upVotesBy: [{ id: 101 }, { id: 102 }],
+    downVotesBy: [{ id: 103 }],
     totalComments: 5,
   };
 
@@ -28,12 +24,16 @@ describe("ThreadItem component", () => {
     render(
       <BrowserRouter>
         <ThreadItem thread={mockThread} />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
 
     // Assert
-    expect(screen.getByText("How to use React Testing Library?")).toBeInTheDocument();
-    expect(screen.getByText("I am learning how to test my React components.")).toBeInTheDocument();
+    expect(
+      screen.getByText("How to use React Testing Library?"),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText("I am learning how to test my React components."),
+    ).toBeInTheDocument();
     expect(screen.getByText("React")).toBeInTheDocument();
     expect(screen.getByText("John Doe")).toBeInTheDocument();
     expect(screen.getByText("5 comments")).toBeInTheDocument();

@@ -33,10 +33,7 @@ function ThreadItem(props) {
   const { thread } = validateProps(threadItemPropsSchema, props, "ThreadItem");
 
   return (
-    <Link
-      data-cy="thread-detail-link"
-      to={`/threads/${thread?.id}`}
-    >
+    <Link data-cy="thread-detail-link" to={`/threads/${thread?.id}`}>
       <div
         key={thread?.id}
         data-id="element-176"

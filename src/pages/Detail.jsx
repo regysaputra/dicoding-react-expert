@@ -66,7 +66,7 @@ function DetailPage() {
     return <div>Loading...</div>;
   }
 
-  console.log("isInclude :", threadDetail?.upVotesBy.includes(authUser?.id))
+  console.log("isInclude :", threadDetail?.upVotesBy.includes(authUser?.id));
 
   return (
     <main className="max-w-4xl mx-auto px-6 py-8">
@@ -160,7 +160,11 @@ function DetailPage() {
               >
                 <button
                   data-cy="thread-upvote-button"
-                  data-voted={threadDetail?.upVotesBy.includes(authUser?.id) ? "true" : "false"}
+                  data-voted={
+                    threadDetail?.upVotesBy.includes(authUser?.id)
+                      ? "true"
+                      : "false"
+                  }
                   onClick={handleUpVote}
                   className="flex items-center space-x-2 text-slate-500 hover:text-blue-600 transition-colors"
                   data-id="element-310"
@@ -170,13 +174,21 @@ function DetailPage() {
                   ) : (
                     <FaRegThumbsUp className="w-5 h-5" />
                   )}
-                  <span data-cy="thread-upvote-count" className="font-medium" data-id="element-312">
+                  <span
+                    data-cy="thread-upvote-count"
+                    className="font-medium"
+                    data-id="element-312"
+                  >
                     {threadDetail?.upVotesBy.length}
                   </span>
                 </button>
                 <button
                   data-cy="thread-downvote-button"
-                  data-voted={threadDetail?.downVotesBy.includes(authUser?.id) ? "true" : "false"}
+                  data-voted={
+                    threadDetail?.downVotesBy.includes(authUser?.id)
+                      ? "true"
+                      : "false"
+                  }
                   onClick={handleDownVote}
                   className="flex items-center space-x-2 text-slate-500 hover:text-blue-600 transition-colors"
                   data-id="element-310"
@@ -186,7 +198,11 @@ function DetailPage() {
                   ) : (
                     <FaRegThumbsDown className="w-5 h-5" />
                   )}
-                  <span data-cy="thread-downvote-count" className="font-medium" data-id="element-312">
+                  <span
+                    data-cy="thread-downvote-count"
+                    className="font-medium"
+                    data-id="element-312"
+                  >
                     {threadDetail?.downVotesBy.length}
                   </span>
                 </button>
@@ -222,7 +238,7 @@ function DetailPage() {
       <h2 className="text-xl font-bold mb-4">
         {threadDetail?.comments.length} Comments
       </h2>
-      { authUser && (
+      {authUser && (
         <div className="mb-6">
           <form
             onSubmit={handleSubmit}
@@ -245,11 +261,10 @@ function DetailPage() {
               </button>
             </div>
           </form>
-
         </div>
-      ) }
+      )}
 
-      <CommentList threadId={id} userId={authUser?.id} threadDetail={threadDetail} />
+      <CommentList userId={authUser?.id} threadDetail={threadDetail} />
     </main>
   );
 }

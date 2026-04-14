@@ -1,14 +1,15 @@
-import {render, screen} from "@testing-library/react";
-import {BrowserRouter} from "react-router";
+import React from "react";
+import { render, screen } from "@testing-library/react";
+import { BrowserRouter } from "react-router";
 import CreateThreadLink from "./CreateThreadLink.jsx";
 
-describe('CreateThreadLink component', () => {
+describe("CreateThreadLink component", () => {
   it("should render the link with correct text and href attribute", () => {
     // Arrange
     render(
       <BrowserRouter>
         <CreateThreadLink />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
 
     // Assert

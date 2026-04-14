@@ -1,11 +1,12 @@
-import {useDispatch} from "react-redux";
-import {render, screen} from "@testing-library/react";
+import React from "react";
+import { useDispatch } from "react-redux";
+import { render, screen } from "@testing-library/react";
 import Comment from "./Comment";
-import {userEvent} from "@testing-library/user-event";
+import { userEvent } from "@testing-library/user-event";
 import {
   asyncToggleDownVoteComment,
   asyncToggleNeutralizeVoteComment,
-  asyncToggleUpVoteComment
+  asyncToggleUpVoteComment,
 } from "../states/threadDetail/action.js";
 
 jest.mock("react-redux", () => ({
@@ -40,7 +41,7 @@ describe("Comment component", () => {
       },
       upVotesBy: [],
       downVotesBy: [],
-    }
+    },
   };
 
   // UI Rendering Tests
@@ -69,8 +70,11 @@ describe("Comment component", () => {
 
     // Assert
     expect(mockDispatch).toHaveBeenCalled();
-    expect(asyncToggleUpVoteComment).toHaveBeenCalledWith("thread-1", "comment-1");
-  })
+    expect(asyncToggleUpVoteComment).toHaveBeenCalledWith(
+      "thread-1",
+      "comment-1",
+    );
+  });
 
   it("should dispatch asyncToggleNeutralVoteComment when upvote button is clicked and user has vote", async () => {
     // Arrange
@@ -91,7 +95,10 @@ describe("Comment component", () => {
 
     // Assert
     expect(mockDispatch).toHaveBeenCalled();
-    expect(asyncToggleNeutralizeVoteComment).toHaveBeenCalledWith("thread-1", "comment-1");
+    expect(asyncToggleNeutralizeVoteComment).toHaveBeenCalledWith(
+      "thread-1",
+      "comment-1",
+    );
   });
 
   // User Interaction Test (Downvotes)
@@ -106,7 +113,10 @@ describe("Comment component", () => {
 
     // Assert
     expect(mockDispatch).toHaveBeenCalled();
-    expect(asyncToggleDownVoteComment).toHaveBeenCalledWith("thread-1", "comment-1");
+    expect(asyncToggleDownVoteComment).toHaveBeenCalledWith(
+      "thread-1",
+      "comment-1",
+    );
   });
 
   it("should dispatch asyncToggleNeutralVoteComment when downvote button is clicked and user has vote", async () => {
@@ -128,6 +138,9 @@ describe("Comment component", () => {
 
     // Assert
     expect(mockDispatch).toHaveBeenCalled();
-    expect(asyncToggleNeutralizeVoteComment).toHaveBeenCalledWith("thread-1", "comment-1");
+    expect(asyncToggleNeutralizeVoteComment).toHaveBeenCalledWith(
+      "thread-1",
+      "comment-1",
+    );
   });
 });

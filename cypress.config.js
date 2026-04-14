@@ -1,7 +1,7 @@
 import { defineConfig } from "cypress";
 
 export default defineConfig({
-  projectId: 'kcxkam',
+  projectId: "kcxkam",
   allowCypressEnv: false,
 
   e2e: {

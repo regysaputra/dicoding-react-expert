@@ -3,7 +3,7 @@ import {
   addThreadActionCreator,
   asyncAddThread,
   asyncPopulateThreads,
-  receiveThreadsActionCreator
+  receiveThreadsActionCreator,
 } from "./action.js";
 import api from "../../utils/api.js";
 
@@ -29,8 +29,8 @@ describe("threads action", () => {
           ownerId: "users-1",
           upVotesBy: [],
           downVotesBy: [],
-          totalComments: 0
-        }
+          totalComments: 0,
+        },
       ];
 
       const expectedAction = {
@@ -58,10 +58,13 @@ describe("threads action", () => {
         ownerId: "users-1",
         upVotesBy: [],
         downVotesBy: [],
-        totalComments: 0
-      }
+        totalComments: 0,
+      };
 
-      const expectedAction = { type: ActionType.ADD_THREAD, payload: { thread } };
+      const expectedAction = {
+        type: ActionType.ADD_THREAD,
+        payload: { thread },
+      };
 
       // Action
       const action = addThreadActionCreator(thread);
@@ -84,8 +87,8 @@ describe("threads action", () => {
             createdAt: "2021-06-21T07:00:00.000Z",
             ownerId: "users-1",
             upVotesBy: [],
-          }
-        ]
+          },
+        ];
 
         const dispatch = jest.fn();
         api.getAllThread.mockResolvedValue(fakeThreads);
@@ -95,7 +98,9 @@ describe("threads action", () => {
 
         // Assert
         expect(api.getAllThread).toHaveBeenCalled();
-        expect(dispatch).toHaveBeenCalledWith(receiveThreadsActionCreator(fakeThreads));
+        expect(dispatch).toHaveBeenCalledWith(
+          receiveThreadsActionCreator(fakeThreads),
+        );
       });
 
       it("should alert error when API call fails", async () => {
@@ -117,7 +122,11 @@ describe("threads action", () => {
     describe("asyncAddThread", () => {
       it("should dispatch action correctly when API call success", async () => {
         // Arrange
-        const fakeInput = { title: "Thread Pertama", body: "Ini adalah thread pertama", category: "General" };
+        const fakeInput = {
+          title: "Thread Pertama",
+          body: "Ini adalah thread pertama",
+          category: "General",
+        };
 
         const fakeThread = {
           id: "thread-1",
@@ -128,8 +137,8 @@ describe("threads action", () => {
           ownerId: "users-1",
           upVotesBy: [],
           downVotesBy: [],
-          totalComments: 0
-        }
+          totalComments: 0,
+        };
         api.createThread.mockResolvedValue(fakeThread);
         const dispatch = jest.fn();
 
@@ -138,12 +147,18 @@ describe("threads action", () => {
 
         // Assert
         expect(api.createThread).toHaveBeenCalledWith(fakeInput);
-        expect(dispatch).toHaveBeenCalledWith(addThreadActionCreator(fakeThread));
+        expect(dispatch).toHaveBeenCalledWith(
+          addThreadActionCreator(fakeThread),
+        );
       });
 
       it("should alert error when API call fails", async () => {
         // Arrange
-        const fakeInput = { title: "Thread Pertama", body: "Ini adalah thread pertama", category: "General" };
+        const fakeInput = {
+          title: "Thread Pertama",
+          body: "Ini adalah thread pertama",
+          category: "General",
+        };
         const fakeError = new Error("Failed to create thread");
         api.createThread.mockRejectedValue(fakeError);
         const dispatch = jest.fn();
@@ -155,7 +170,7 @@ describe("threads action", () => {
         expect(api.createThread).toHaveBeenCalledWith(fakeInput);
         expect(dispatch).not.toHaveBeenCalled();
         expect(global.alert).toHaveBeenCalledWith(fakeError.message);
-      })
+      });
     });
   });
 });

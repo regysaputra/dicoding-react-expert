@@ -1,4 +1,4 @@
-describe('Logout', () => {
+describe("Logout", () => {
   const testUser = {
     name: "John Doe",
     email: `logintester_${Date.now()}@gmail.com`,

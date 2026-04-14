@@ -2,7 +2,7 @@ import React from "react";
 import { render, screen } from "@testing-library/react";
 import ThreadList from "./ThreadList";
 import "@testing-library/jest-dom";
-import {BrowserRouter} from "react-router";
+import { BrowserRouter } from "react-router";
 
 describe("ThreadList component", () => {
   // 🧱 MOCK DATA (Array of threads)
@@ -36,7 +36,7 @@ describe("ThreadList component", () => {
     render(
       <BrowserRouter>
         <ThreadList threads={mockThreadsArray} />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
 
     // Assert - Check if both titles rendered successfully

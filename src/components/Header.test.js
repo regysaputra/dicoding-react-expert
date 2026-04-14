@@ -33,7 +33,7 @@ describe("Header component", () => {
     render(
       <BrowserRouter>
         <Header authUser={undefined} onLogout={mockOnLogout} />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
 
     // Assert
@@ -47,7 +47,7 @@ describe("Header component", () => {
     render(
       <BrowserRouter>
         <Header authUser={undefined} onLogout={mockOnLogout} />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
     const loginButton = screen.getByRole("button", { name: "Login" });
 
@@ -63,13 +63,15 @@ describe("Header component", () => {
     render(
       <BrowserRouter>
         <Header authUser={mockAuthUser} onLogout={mockOnLogout} />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
 
     // Assert: The avatar should show the first two letters of the name ("Jo")
     expect(screen.getByText("Jo")).toBeInTheDocument();
     // The Login button should NOT be there anymore
-    expect(screen.queryByRole("button", { name: "Login" })).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("button", { name: "Login" }),
+    ).not.toBeInTheDocument();
   });
 
   it("should open dropdown menu when avatar is clicked", async () => {
@@ -78,7 +80,7 @@ describe("Header component", () => {
     render(
       <BrowserRouter>
         <Header authUser={mockAuthUser} onLogout={mockOnLogout} />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
 
     // The avatar button contains the text "Jo"
@@ -90,7 +92,9 @@ describe("Header component", () => {
     // Assert: The dropdown menu should now be visible
     expect(screen.getByText("John Doe")).toBeInTheDocument();
     expect(screen.getByText("john@example.com")).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /log out/i })).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: /log out/i }),
+    ).toBeInTheDocument();
   });
 
   it("should call onLogout function when Log out button is clicked", async () => {
@@ -99,7 +103,7 @@ describe("Header component", () => {
     render(
       <BrowserRouter>
         <Header authUser={mockAuthUser} onLogout={mockOnLogout} />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
 
     // 1. Open the menu first
@@ -120,7 +124,7 @@ describe("Header component", () => {
     render(
       <BrowserRouter>
         <Header authUser={mockAuthUser} onLogout={mockOnLogout} />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
 
     // 1. Click the avatar to open the menu
@@ -128,12 +132,16 @@ describe("Header component", () => {
     await user.click(avatarButton);
 
     // Verify the menu is currently open
-    expect(screen.getByRole("button", { name: /log out/i })).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: /log out/i }),
+    ).toBeInTheDocument();
 
     // 2. Action - Simulate clicking outside the menu (on the document body)
     await user.click(document.body);
 
     // Assert - The menu should now be closed and gone from the document
-    expect(screen.queryByRole("button", { name: /log out/i })).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("button", { name: /log out/i }),
+    ).not.toBeInTheDocument();
   });
 });

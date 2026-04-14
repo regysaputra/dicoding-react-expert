@@ -1,13 +1,13 @@
 import authUserReducer from "./reducer.js";
-import {ActionType} from "./action.js";
+import { ActionType } from "./action.js";
 
 const initialState = {
   authUser: {
     id: "john_doe",
     name: "John Doe",
     email: "john@example.com",
-    avatar: "https://generated-image-url.jpg"
-  }
+    avatar: "https://generated-image-url.jpg",
+  },
 };
 
 describe("authUser reducer", () => {
@@ -36,7 +36,7 @@ describe("authUser reducer", () => {
     // Arrange
     const action = {
       type: ActionType.SET_AUTH_USER,
-      payload: initialState
+      payload: initialState,
     };
 
     // Action

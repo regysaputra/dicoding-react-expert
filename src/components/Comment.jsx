@@ -79,7 +79,9 @@ function Comment(props) {
             <div className="flex items-center gap-4">
               <button
                 data-cy="comment-upvote-button"
-                data-voted={comment.upVotesBy.includes(userId) ? "true" : "false"}
+                data-voted={
+                  comment.upVotesBy.includes(userId) ? "true" : "false"
+                }
                 onClick={handleUpVote}
                 className="flex items-center gap-1 text-slate-500"
               >
@@ -88,11 +90,15 @@ function Comment(props) {
                 ) : (
                   <FaRegThumbsUp />
                 )}
-                <span data-cy="comment-upvote-count">{comment.upVotesBy.length}</span>
+                <span data-cy="comment-upvote-count">
+                  {comment.upVotesBy.length}
+                </span>
               </button>
               <button
                 data-cy="comment-downvote-button"
-                data-voted={comment.downVotesBy.includes(userId) ? "true" : "false"}
+                data-voted={
+                  comment.downVotesBy.includes(userId) ? "true" : "false"
+                }
                 onClick={handleDownVote}
                 className="flex items-center gap-1 text-slate-500"
               >
@@ -101,7 +107,9 @@ function Comment(props) {
                 ) : (
                   <FaRegThumbsDown />
                 )}
-                <span data-cy="comment-downvote-count">{comment.downVotesBy.length}</span>
+                <span data-cy="comment-downvote-count">
+                  {comment.downVotesBy.length}
+                </span>
               </button>
             </div>
           </div>
