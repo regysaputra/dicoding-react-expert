@@ -6,7 +6,7 @@ OpenSpace is a forum application built with React, Redux, and Tailwind CSS. It a
 
 ## 🚀 Features
 
-- **Authentication**: Secure Login and Register functionality.
+- **Authentication**: Secure Login and Register functionality
 - **Thread Management**: Create new threads, view a list of threads, and filter threads by category.
 - **Interactions**: Comment on threads and see the latest updates in real-time.
 - **Leaderboard**: View top active users based on their engagement.
