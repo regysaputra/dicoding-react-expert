@@ -3,6 +3,7 @@ import React from "react";
 import Joi from "joi";
 import { validateProps } from "../utils/index.js";
 
+// Schema for CommentList component
 const commentListPropsSchema = Joi.object({
   threadDetail: Joi.object({
     comments: Joi.array().items(
