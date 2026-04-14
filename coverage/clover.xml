@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1776133710737" clover="3.2.0">
-  <project timestamp="1776133710737" name="All files">
+<coverage generated="1776163832679" clover="3.2.0">
+  <project timestamp="1776163832679" name="All files">
     <metrics statements="316" coveredstatements="203" conditionals="100" coveredconditionals="65" methods="98" coveredmethods="79" elements="514" coveredelements="347" complexity="0" loc="316" ncloc="316" packages="7" files="18" classes="18"/>
     <package name="components">
       <metrics statements="38" coveredstatements="38" conditionals="20" coveredconditionals="20" methods="16" coveredmethods="16"/>
@@ -194,17 +194,17 @@
         <line num="66" count="1" type="stmt"/>
         <line num="67" count="2" type="stmt"/>
         <line num="70" count="1" type="stmt"/>
-        <line num="72" count="1" type="stmt"/>
-        <line num="79" count="1" type="stmt"/>
-        <line num="83" count="2" type="stmt"/>
-        <line num="86" count="3" type="cond" truecount="2" falsecount="0"/>
-        <line num="87" count="2" type="cond" truecount="2" falsecount="0"/>
-        <line num="90" count="2" type="stmt"/>
-        <line num="93" count="2" type="cond" truecount="2" falsecount="0"/>
-        <line num="96" count="2" type="stmt"/>
+        <line num="75" count="1" type="stmt"/>
+        <line num="82" count="1" type="stmt"/>
+        <line num="86" count="2" type="stmt"/>
+        <line num="89" count="3" type="cond" truecount="2" falsecount="0"/>
+        <line num="90" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="93" count="2" type="stmt"/>
+        <line num="96" count="2" type="cond" truecount="2" falsecount="0"/>
         <line num="99" count="2" type="stmt"/>
-        <line num="106" count="1" type="stmt"/>
-        <line num="110" count="2" type="stmt"/>
+        <line num="102" count="2" type="stmt"/>
+        <line num="109" count="1" type="stmt"/>
+        <line num="113" count="2" type="stmt"/>
       </file>
     </package>
     <package name="states.threads">
