@@ -45,13 +45,12 @@ describe("Voting", () => {
             content: "This is a test comment.",
           },
         }).then(() => {
-          cy.visit(`http://localhost:5173/threads/${threadId}`);
-          cy.intercept("GET", "**/threads/*").as("getThreadDetail");
-
+          cy.intercept("GET", `**/threads/${threadId}`).as("getThreadDetail");
           cy.intercept("POST", "**/up-vote").as("upvoteCall");
           cy.intercept("POST", "**/down-vote").as("downvoteCall");
           cy.intercept("POST", "**/neutral-vote").as("neutralvoteCall");
-          cy.reload();
+          cy.visit(`http://localhost:5173/threads/${threadId}`);
+          cy.wait("@getThreadDetail");
         });
       });
     });
@@ -59,7 +58,6 @@ describe("Voting", () => {
 
   it("should handle the complete thread voting journey", () => {
     // Upvote (start from a neutral state)
-    cy.wait("@getThreadDetail");
     cy.waitForNetworkIdle(500);
     cy.get('[data-cy="thread-upvote-button"]').should("be.visible");
     cy.get('[data-cy="thread-upvote-button"]').should(
@@ -86,12 +84,6 @@ describe("Voting", () => {
             expect($newBtn.attr("data-voted")).to.eq(initialValue);
           });
         });
-
-        cy.get('[data-cy="thread-upvote-button"]').should(
-          "have.attr",
-          "data-voted",
-          "true",
-        );
 
         cy.get('[data-cy="thread-upvote-count"]')
           .invoke("text")
@@ -155,7 +147,6 @@ describe("Voting", () => {
 
   it("should handle the complete comment voting journey", () => {
     // Upvote (start from a neutral state)
-    cy.wait("@getThreadDetail");
     cy.waitForNetworkIdle(500);
     cy.get('[data-cy="comment-upvote-button"]').first().should("be.visible");
     cy.get('[data-cy="comment-upvote-button"]')

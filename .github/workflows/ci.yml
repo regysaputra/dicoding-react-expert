@@ -1,22 +1,43 @@
 name: Continuous Integration
 on:
+  push:
+    branches:
+      - main
   pull_request:
     branches:
       - main
+
 jobs:
-  automation-test-job:
+  cypress-run:
     runs-on: ubuntu-latest
+
+    # Optional: Run 2 servers at once to cut test time in half!
+    strategy:
+      fail-fast: false
+      matrix:
+        containers: [1, 2]
+
     steps:
-      - uses: actions/checkout@v2
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v2
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      # 🟢 The Official Action takes over here!
+      - name: Cypress run
+        uses: cypress-io/github-action@v6
         with:
-          node-version: ${{ matrix.node-version }}
-      - name: Install Cypress Dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libnss3 libxss1 libasound2t64 libxtst6 xauth xvfb
-      - name: npm install and test
-        run: |
-          npm install
-          npm run ci:test
+          # Tell it how to boot your Vite server
+          start: npm run dev
+
+          # Tell it where to wait for Vite to be ready
+          wait-on: 'http://localhost:5173'
+
+          # Send the video and analytics to the cloud
+          record: true
+          parallel: true
+
+        env:
+          # Your secret key we set up earlier
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+
+          # GitHub provides this token automatically behind the scenes!
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
