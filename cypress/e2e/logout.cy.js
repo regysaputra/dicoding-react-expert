@@ -1,13 +1,13 @@
 describe("Logout", () => {
   const testUser = {
-    name: "John Doe",
-    email: `logintester_${Date.now()}@gmail.com`,
-    password: "123456",
+    name: "Regy",
+    email: `regy_ci_tester@gmail.com`,
+    password: "password123",
   };
 
-  before("Register", () => {
-    cy.request("POST", "https://forum-api.dicoding.dev/v1/register", testUser);
-  });
+  // before("Register", () => {
+  //   cy.request("POST", "https://forum-api.dicoding.dev/v1/register", testUser);
+  // });
 
   beforeEach("Login", () => {
     cy.request("POST", "https://forum-api.dicoding.dev/v1/login", {

@@ -1,16 +1,16 @@
 describe("Voting", () => {
   const testUser = {
-    name: "Vote Tester",
-    email: `vote_tester_${Date.now()}@gmail.com`,
+    name: "Regy",
+    email: `regy_ci_tester@gmail.com`,
     password: "password123",
   };
 
   let token = "";
   let threadId = "";
 
-  before("Register", () => {
-    cy.request("POST", "https://forum-api.dicoding.dev/v1/register", testUser);
-  });
+  // before("Register", () => {
+  //   cy.request("POST", "https://forum-api.dicoding.dev/v1/register", testUser);
+  // });
 
   beforeEach("Login, Create Thread, and Create Comment", () => {
     cy.request("POST", "https://forum-api.dicoding.dev/v1/login", {
@@ -46,9 +46,12 @@ describe("Voting", () => {
           },
         }).then(() => {
           cy.intercept("GET", `**/threads/${threadId}`).as("getThreadDetail");
-          cy.intercept("POST", "**/up-vote").as("upvoteCall");
-          cy.intercept("POST", "**/down-vote").as("downvoteCall");
-          cy.intercept("POST", "**/neutral-vote").as("neutralvoteCall");
+          cy.intercept("POST", "**/threads/*/up-vote").as("upvoteCall");
+          cy.intercept("POST", "**/threads/*/down-vote").as("downvoteCall");
+          cy.intercept("POST", "**/threads/*/neutral-vote").as("neutralvoteCall");
+          cy.intercept("POST", "**/comments/**/up-vote").as("commentUpvoteCall");
+          cy.intercept("POST", "**/comments/**/down-vote").as("commentDownvoteCall");
+          cy.intercept("POST", "**/comments/**/neutral-vote").as("commentNeutralvoteCall");
           cy.visit(`http://localhost:5173/threads/${threadId}`);
           cy.wait("@getThreadDetail");
         });
@@ -70,20 +73,15 @@ describe("Voting", () => {
       .then((text) => {
         const upvoteCount = parseInt(text.trim(), 10) || 0;
         cy.get('[data-cy="thread-upvote-button"]').click();
-        cy.wait("@upvoteCall")
-          .its("response.statusCode")
-          .should("be.oneOf", [200, 201]);
+        cy.wait("@upvoteCall");
 
-        // Wait for stability - check that the value doesn't change for 1 second
-        cy.get('[data-cy="thread-upvote-button"]').then(($btn) => {
-          const initialValue = $btn.attr("data-voted");
+        cy.waitForNetworkIdle(500);
 
-          cy.waitForNetworkIdle(500);
-
-          cy.get('[data-cy="thread-upvote-button"]').should(($newBtn) => {
-            expect($newBtn.attr("data-voted")).to.eq(initialValue);
-          });
-        });
+        cy.get('[data-cy="thread-upvote-button"]').should(
+          "have.attr",
+          "data-voted",
+          "true",
+        );
 
         cy.get('[data-cy="thread-upvote-count"]')
           .invoke("text")
@@ -106,6 +104,7 @@ describe("Voting", () => {
         const downvoteCount = parseInt(text.trim(), 10) || 0;
         cy.get('[data-cy="thread-downvote-button"]').click();
         cy.wait("@downvoteCall");
+        cy.waitForNetworkIdle(500);
         cy.get('[data-cy="thread-downvote-button"]').should(
           "have.attr",
           "data-voted",
@@ -131,6 +130,7 @@ describe("Voting", () => {
         const downvoteCount = parseInt(text.trim(), 10);
         cy.get('[data-cy="thread-downvote-button"]').click();
         cy.wait("@neutralvoteCall");
+        cy.waitForNetworkIdle(500);
         cy.get('[data-cy="thread-downvote-button"]').should(
           "have.attr",
           "data-voted",
@@ -158,22 +158,11 @@ describe("Voting", () => {
       .then((text) => {
         const upvoteCount = parseInt(text.trim(), 10) || 0;
         cy.get('[data-cy="comment-upvote-button"]').first().click();
-        cy.wait("@upvoteCall")
-          .its("response.statusCode")
-          .should("be.oneOf", [200, 201]);
+        cy.wait("@commentUpvoteCall");
+        cy.waitForNetworkIdle(500);
         cy.get('[data-cy="comment-upvote-button"]')
           .first()
-          .then(($btn) => {
-            const initialValue = $btn.attr("data-voted");
-
-            cy.waitForNetworkIdle(500);
-
-            cy.get('[data-cy="comment-upvote-button"]')
-              .first()
-              .should(($newBtn) => {
-                expect($newBtn.attr("data-voted")).to.eq(initialValue);
-              });
-          });
+          .should("have.attr", "data-voted", "true");
 
         cy.get('[data-cy="comment-upvote-count"]')
           .first()
@@ -195,7 +184,8 @@ describe("Voting", () => {
       .then((text) => {
         const downvoteCount = parseInt(text.trim(), 10) || 0;
         cy.get('[data-cy="comment-downvote-button"]').first().click();
-        cy.wait("@downvoteCall");
+        cy.wait("@commentDownvoteCall");
+        cy.waitForNetworkIdle(500);
         cy.get('[data-cy="comment-downvote-button"]')
           .first()
           .should("have.attr", "data-voted", "true");
@@ -218,7 +208,8 @@ describe("Voting", () => {
       .then((text) => {
         const downvoteCount = parseInt(text.trim(), 10);
         cy.get('[data-cy="comment-downvote-button"]').first().click();
-        cy.wait("@neutralvoteCall");
+        cy.wait("@commentNeutralvoteCall");
+        cy.waitForNetworkIdle(500);
         cy.get('[data-cy="comment-downvote-button"]')
           .first()
           .should("have.attr", "data-voted", "false");

@@ -1,18 +1,18 @@
 describe("Create comment", () => {
   // Create unique user
   const testUser = {
-    name: "Comment Tester",
-    email: `thread_tester_${Date.now()}@gmail.com`,
+    name: "Regy",
+    email: `regy_ci_tester@gmail.com`,
     password: "password123",
   };
 
-  before("Register", () => {
-    cy.request({
-      method: "POST",
-      url: "https://forum-api.dicoding.dev/v1/register",
-      body: testUser,
-    });
-  });
+  // before("Register", () => {
+  //   cy.request({
+  //     method: "POST",
+  //     url: "https://forum-api.dicoding.dev/v1/register",
+  //     body: testUser,
+  //   });
+  // });
 
   beforeEach("Login", () => {
     cy.request({

@@ -66,7 +66,7 @@ function DetailPage() {
     return <div>Loading...</div>;
   }
 
-  console.log("isInclude :", threadDetail?.upVotesBy.includes(authUser?.id));
+  console.log("authUser.id value =", authUser?.id);
 
   return (
     <main className="max-w-4xl mx-auto px-6 py-8">
