@@ -7,16 +7,30 @@ describe("Create comment", () => {
   };
 
   beforeEach("Login and Create Thread", () => {
-    // ===================== LOGIN ================================
+    // 1. Set up our API interceptors BEFORE we do anything
+    cy.intercept('POST', '**/login').as('loginCall');
+    cy.intercept('GET', '**/threads').as('getThreadsCall');
+
+    // 2. ===================== LOGIN ================================
     cy.visit("http://localhost:5173/login");
     cy.get('[data-cy="email"]').type(testUser.email);
     cy.get('[data-cy="password"]').type(testUser.password);
     cy.get('[data-cy="loginButton"]').click();
+
+    // 3. Wait for the login API to finish returning the token
+    cy.wait('@loginCall');
     cy.url().should('eq', 'http://localhost:5173/');
 
+    // 4. Wait for the homepage to finish fetching the threads
+    cy.wait('@getThreadsCall');
+
     // ====================== CREATE THREAD ========================
-    cy.waitForNetworkIdle(500);
-    cy.get('[data-cy="create-thread-link"]').click();
+    // 5. Check if the loading bar is gone (if you use react-redux-loading-bar)
+    cy.get('.loading-bar').should('not.exist');
+
+    // 6. NOW look for the button!
+    // ⚠️ Double check that "create-thread-link" matches your React code exactly!
+    cy.get('[data-cy="create-thread-link"]').should('be.visible').click();
 
     const threadTitle = `My Cypress Test Thread ${Date.now()}`;
 
