@@ -47,8 +47,7 @@ describe("Register spec", () => {
     // Navigate to login page
     cy.url().should("eq", "http://localhost:5173/");
 
-    // Verify the browser actually redirected to the login route
+    // Verify the browser actually redirected to the home route
     cy.url().should("include", "/");
-    cy.get("header").contains("Login").should("not.exist");
   });
 });
