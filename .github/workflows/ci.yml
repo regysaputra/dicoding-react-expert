@@ -11,12 +11,6 @@ jobs:
   cypress-run:
     runs-on: ubuntu-latest
 
-    # Optional: Run 2 servers at once to cut test time in half!
-    strategy:
-      fail-fast: false
-      matrix:
-        containers: [1, 2]
-
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -33,7 +27,7 @@ jobs:
 
           # Send the video and analytics to the cloud
           record: true
-          parallel: true
+          parallel: false
 
         env:
           # Your secret key we set up earlier
