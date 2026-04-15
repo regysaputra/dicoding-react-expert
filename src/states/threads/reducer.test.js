@@ -19,7 +19,7 @@ describe("threadReducers function", () => {
     const latestState = threadsReducer();
 
     // Assert
-    expect(latestState).toEqual(null);
+    expect(latestState).toEqual([]);
   });
 
   it("should return all thread when given RECEIVE_THREADS action", () => {
