@@ -13,9 +13,17 @@ describe("Voting", () => {
   // });
 
   beforeEach("Login, Create Thread, and Create Comment", () => {
-    cy.request("POST", "https://forum-api.dicoding.dev/v1/login", {
-      email: testUser.email,
-      password: testUser.password,
+    cy.request({
+      method: "POST",
+      url: "https://forum-api.dicoding.dev/v1/login",
+      headers: {
+        "Origin": "http://localhost:5173",
+        "Referer": "http://localhost:5173/"
+      },
+      body: {
+        email: testUser.email,
+        password: testUser.password
+      }
     }).then((response) => {
       token = response.body.data.token;
 

@@ -18,6 +18,10 @@ describe("Create comment", () => {
     cy.request({
       method: "POST",
       url: "https://forum-api.dicoding.dev/v1/login",
+      headers: {
+        "Origin": "http://localhost:5173",
+        "Referer": "http://localhost:5173/"
+      },
       body: {
         email: testUser.email,
         password: testUser.password,

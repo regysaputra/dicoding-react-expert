@@ -18,10 +18,14 @@ describe("Create thread", () => {
     cy.request({
       method: "POST",
       url: "https://forum-api.dicoding.dev/v1/login",
+      headers: {
+        "Origin": "http://localhost:5173",
+        "Referer": "http://localhost:5173/"
+      },
       body: {
         email: testUser.email,
-        password: testUser.password,
-      },
+        password: testUser.password
+      }
     }).then((response) => {
       const { token } = response.body.data;
       window.localStorage.setItem("accessToken", token);
