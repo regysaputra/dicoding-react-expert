@@ -15,6 +15,7 @@ describe("Create comment", () => {
     cy.url().should('eq', 'http://localhost:5173/');
 
     // ====================== CREATE THREAD ========================
+    cy.waitForNetworkIdle(500);
     cy.get('[data-cy="create-thread-link"]').click();
 
     const threadTitle = `My Cypress Test Thread ${Date.now()}`;
