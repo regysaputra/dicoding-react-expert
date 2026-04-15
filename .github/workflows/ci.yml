@@ -8,14 +8,19 @@ on:
       - main
 
 jobs:
-  cypress-run:
+  automation-test-job:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      # 🟢 The Official Action takes over here!
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Run Jest Tests
+        run: npm run test
+
       - name: Cypress run
         uses: cypress-io/github-action@v6
         with:
@@ -30,8 +35,7 @@ jobs:
           parallel: false
 
         env:
-          # Your secret key we set up earlier
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
 
-          # GitHub provides this token automatically behind the scenes!
+          # GitHub provides this token automatically
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
