@@ -1,4 +1,9 @@
-import {asyncSetAuthUser, asyncUnsetAuthUser, setAuthUserActionCreator, unsetAuthUserActionCreator} from "./action.js";
+import {
+  asyncSetAuthUser,
+  asyncUnsetAuthUser,
+  setAuthUserActionCreator,
+  unsetAuthUserActionCreator,
+} from "./action.js";
 import api from "../../utils/api.js";
 
 jest.mock("../../utils/api.js", () => ({
@@ -22,7 +27,7 @@ describe("authUser action creator", () => {
         id: "user-1",
         name: "John Doe",
         email: "john_doe@gmail.com",
-        avatar: "https://generated-image-url.jpg"
+        avatar: "https://generated-image-url.jpg",
       };
 
       const expectedAction = {
@@ -60,9 +65,16 @@ describe("authUser action creator", () => {
     describe("asyncSetAuthUser", () => {
       it("should dispatch action correctly when API call success", async () => {
         // Arrange
-        const fakeCredentials = { email: "john_doe@gmail.com", password: "password" };
+        const fakeCredentials = {
+          email: "john_doe@gmail.com",
+          password: "password",
+        };
         const fakeToken = "fake-token";
-        const fakeUser = { id: "user-1", name: "John Doe", email: "john_doe@gmail.com" };
+        const fakeUser = {
+          id: "user-1",
+          name: "John Doe",
+          email: "john_doe@gmail.com",
+        };
         const dispatch = jest.fn();
         api.login.mockResolvedValue(fakeToken);
         api.getOwnProfile.mockResolvedValue(fakeUser);
@@ -74,12 +86,17 @@ describe("authUser action creator", () => {
         expect(api.login).toHaveBeenCalledWith(fakeCredentials);
         expect(api.putAccessToken).toHaveBeenCalledWith(fakeToken);
         expect(api.getOwnProfile).toHaveBeenCalled();
-        expect(dispatch).toHaveBeenCalledWith(setAuthUserActionCreator(fakeUser));
+        expect(dispatch).toHaveBeenCalledWith(
+          setAuthUserActionCreator(fakeUser),
+        );
       });
 
       it("should alert error when API call fails", async () => {
         // Arrange
-        const fakeCredentials = { email: "john_doe@gmail.com", password: "password" };
+        const fakeCredentials = {
+          email: "john_doe@gmail.com",
+          password: "password",
+        };
         const fakeError = new Error("Invalid credentials");
         api.login.mockRejectedValue(fakeError);
         const dispatch = jest.fn();

@@ -8,40 +8,58 @@ import { defineConfig } from "eslint/config";
 import daStyle from "eslint-config-dicodingacademy";
 import eslintConfigPrettier from "eslint-config-prettier";
 import jestPlugin from "eslint-plugin-jest";
+import cypressPlugin from "eslint-plugin-cypress";
 
-export default defineConfig([{
-  files: ["**/*.{js,mjs,cjs,jsx}"],
-  plugins: { js },
-  extends: ["js/recommended"],
-  languageOptions: {
-    globals: {
-      ...globals.browser,
-      ...globals.node,
+export default defineConfig([
+  {
+    ignores: [
+      "node_modules/**",
+      "dist/**",
+      "coverage/**",
+      "storybook-static/**",
+      "cypress.config.js",
+    ],
+  },
+  {
+    files: ["**/*.{js,mjs,cjs,jsx}"],
+    plugins: { js },
+    extends: ["js/recommended"],
+    languageOptions: {
+      globals: {
+        ...globals.browser,
+        ...globals.node,
+      },
+    },
+    settings: {
+      react: {
+        version: "detect",
+      },
     },
   },
-  settings: {
-    react: {
-      version: "detect",
+  {
+    files: ["**/*.test.{js,jsx,mjs,cjs}", "**/*.spec.{js,jsx,mjs,cjs}"],
+    ...jestPlugin.configs["flat/recommended"],
+    languageOptions: {
+      globals: {
+        ...globals.jest,
+      },
     },
   },
-}, {
-  files: ["**/*.test.{js,jsx,mjs,cjs}", "**/*.spec.{js,jsx,mjs,cjs}"],
-  ...jestPlugin.configs["flat/recommended"],
-  languageOptions: {
-    globals: {
-      ...globals.jest,
+  {
+    files: ["cypress/**/*.js", "cypress/**/*.jsx", "**/*.cy.{js,jsx}"],
+    ...cypressPlugin.configs.recommended,
+    languageOptions: {
+      globals: {
+        ...cypressPlugin.configs.recommended.languageOptions?.globals,
+        cy: true,
+        Cypress: true,
+        expect: true,
+        assert: true,
+      },
     },
   },
-}, {
-  files: ["cypress/**/*.js", "cypress/**/*.jsx", "**/*.cy.{js,jsx}"],
-  ...cypressPlugin.configs.recommended,
-  languageOptions: {
-    globals: {
-      ...cypressPlugin.configs.recommended.languageOptions?.globals,
-      cy: true,
-      Cypress: true,
-      expect: true,
-      assert: true,
-    },
-  },
-}, pluginReact.configs.flat.recommended, daStyle, eslintConfigPrettier, ...storybook.configs["flat/recommended"]]);
+  pluginReact.configs.flat.recommended,
+  daStyle,
+  eslintConfigPrettier,
+  ...storybook.configs["flat/recommended"],
+]);

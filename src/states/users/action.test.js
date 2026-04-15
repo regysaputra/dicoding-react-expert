@@ -1,4 +1,8 @@
-import {asyncPopulateUsers, asyncRegisterUser, receiveUsersActionCreator} from "./action.js";
+import {
+  asyncPopulateUsers,
+  asyncRegisterUser,
+  receiveUsersActionCreator,
+} from "./action.js";
 import api from "../../utils/api.js";
 
 jest.mock("../../utils/api.js", () => ({
@@ -9,12 +13,12 @@ jest.mock("../../utils/api.js", () => ({
 // Mock global alert
 global.alert = jest.fn();
 
-describe('users action', () => {
+describe("users action", () => {
   afterEach(() => {
     jest.clearAllMocks();
   });
 
-  describe('sync action', () => {
+  describe("sync action", () => {
     it("should create RECEIVE_USERS action correctly", () => {
       // Arrange
       const users = [
@@ -22,9 +26,9 @@ describe('users action', () => {
           id: "john_doe",
           name: "John Doe",
           email: "john@example.com",
-          avatar: "https://generated-image-url.jpg"
-        }
-      ]
+          avatar: "https://generated-image-url.jpg",
+        },
+      ];
 
       const expectedAction = {
         type: "RECEIVE_USERS",
@@ -45,7 +49,11 @@ describe('users action', () => {
     describe("asyncRegisterUser", () => {
       it("should dispatch action correctly when API call success", async () => {
         // Arrange
-        const fakeCredentials = { name: "John Doe", email: "john_doe@gmail.com", password: "password" };
+        const fakeCredentials = {
+          name: "John Doe",
+          email: "john_doe@gmail.com",
+          password: "password",
+        };
 
         // Action
         await asyncRegisterUser(fakeCredentials)();
@@ -56,7 +64,11 @@ describe('users action', () => {
 
       it("should alert error when API call fails", async () => {
         // Arrange
-        const fakeCredentials = { name: "John Doe", email: "john_doe@gmail.com", password: "password" };
+        const fakeCredentials = {
+          name: "John Doe",
+          email: "john_doe@gmail.com",
+          password: "password",
+        };
         const fakeError = new Error("Invalid credentials");
         api.register.mockRejectedValue(fakeError);
 
@@ -72,12 +84,14 @@ describe('users action', () => {
     describe("asyncPopulateUsers", () => {
       it("should dispatch action correctly when API call success", async () => {
         // Arrange
-        const fakeUsers = [{
-          id: "john_doe",
-          name: "John Doe",
-          email: "john@example.com",
-          avatar: "https://generated-image-url.jpg"
-        }];
+        const fakeUsers = [
+          {
+            id: "john_doe",
+            name: "John Doe",
+            email: "john@example.com",
+            avatar: "https://generated-image-url.jpg",
+          },
+        ];
 
         api.getAllUsers.mockResolvedValue(fakeUsers);
         const dispatch = jest.fn();
@@ -87,7 +101,9 @@ describe('users action', () => {
 
         // Assert
         expect(api.getAllUsers).toHaveBeenCalled();
-        expect(dispatch).toHaveBeenCalledWith(receiveUsersActionCreator(fakeUsers));
+        expect(dispatch).toHaveBeenCalledWith(
+          receiveUsersActionCreator(fakeUsers),
+        );
       });
 
       it("should alert error when API call fails", async () => {

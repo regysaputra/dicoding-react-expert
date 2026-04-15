@@ -1,5 +1,5 @@
 import threadDetailReducer from "./reducer.js";
-import {ActionType} from "./action.js";
+import { ActionType } from "./action.js";
 
 const initialState = {
   id: "thread-1",
@@ -10,7 +10,7 @@ const initialState = {
   owner: {
     id: "users-1",
     name: "John Doe",
-    avatar: "https://generated-image-url.jpg"
+    avatar: "https://generated-image-url.jpg",
   },
   upVotesBy: [],
   downVotesBy: [],
@@ -22,18 +22,18 @@ const initialState = {
       owner: {
         id: "users-1",
         name: "John Doe",
-        avatar: "https://generated-image-url.jpg"
+        avatar: "https://generated-image-url.jpg",
       },
       upVotesBy: [],
-      downVotesBy: []
-    }
-  ]
+      downVotesBy: [],
+    },
+  ],
 };
 
-describe('threadDetail reducer', () => {
-  it('should return null when given unknown action', () => {
+describe("threadDetail reducer", () => {
+  it("should return null when given unknown action", () => {
     // Arrange
-    const action = { type: 'UNKNOWN' };
+    const action = { type: "UNKNOWN" };
 
     // Action
     const state = threadDetailReducer(undefined, action);
@@ -42,7 +42,7 @@ describe('threadDetail reducer', () => {
     expect(state).toEqual(null);
   });
 
-  it('should return null when given no argument at all', () => {
+  it("should return null when given no argument at all", () => {
     // Action
     const state = threadDetailReducer();
 
@@ -56,9 +56,9 @@ describe('threadDetail reducer', () => {
     const action = {
       type: "RECEIVE_THREAD_DETAIL",
       payload: {
-        threadDetail: initialState
-      }
-    }
+        threadDetail: initialState,
+      },
+    };
 
     // Action
     const state = threadDetailReducer(initialState, action);
@@ -78,16 +78,16 @@ describe('threadDetail reducer', () => {
       owner: {
         id: "users-1",
         name: "John Doe",
-        email: "john@example.com"
-      }
+        email: "john@example.com",
+      },
     };
 
     const action = {
       type: ActionType.ADD_COMMENT,
       payload: {
-        comment: newComment
-      }
-    }
+        comment: newComment,
+      },
+    };
 
     // Action
     const state = threadDetailReducer(initialState, action);
@@ -103,12 +103,12 @@ describe('threadDetail reducer', () => {
       type: ActionType.TOGGLE_UPVOTE_THREAD,
       payload: {
         userId: "users-1",
-      }
-    }
+      },
+    };
     const modifiedInitialState = {
       ...initialState,
       upvotesBy: ["users-1"],
-      downVotesBy: ["users-2"]
+      downVotesBy: ["users-2"],
     };
 
     // Action
@@ -126,12 +126,12 @@ describe('threadDetail reducer', () => {
       type: ActionType.TOGGLE_DOWNVOTE_THREAD,
       payload: {
         userId: "users-1",
-      }
-    }
+      },
+    };
 
     const modifiedInitialState = {
       ...initialState,
-      upVotesBy: ["users-1", "users-2"]
+      upVotesBy: ["users-1", "users-2"],
     };
 
     // Action
@@ -149,8 +149,8 @@ describe('threadDetail reducer', () => {
       type: ActionType.TOGGLE_NEUTRALIZEVOTE_THREAD,
       payload: {
         userId: "users-1",
-      }
-    }
+      },
+    };
 
     // Action
     const state = threadDetailReducer(initialState, action);
@@ -166,8 +166,8 @@ describe('threadDetail reducer', () => {
       type: ActionType.TOGGLE_NEUTRALIZEVOTE_THREAD,
       payload: {
         userId: "users-1",
-      }
-    }
+      },
+    };
     const modifiedInitialState = {
       ...initialState,
       upVotesBy: ["users-1"],
@@ -188,25 +188,34 @@ describe('threadDetail reducer', () => {
       type: ActionType.TOGGLE_UPVOTE_COMMENT,
       payload: {
         userId: "users-1",
-        commentId: "comment-1"
-      }
-    }
+        commentId: "comment-1",
+      },
+    };
 
     const modifiedInitialState = {
       ...initialState,
       comments: [
         {
           ...initialState.comments[0],
-          downVotesBy: ["user-1", "users-2"]
+          downVotesBy: ["user-1", "users-2"],
         },
-        { id: "comment-2", content: "Second comment", upVotesBy: [], downVotesBy: [] }
-      ]
+        {
+          id: "comment-2",
+          content: "Second comment",
+          upVotesBy: [],
+          downVotesBy: [],
+        },
+      ],
     };
 
     // Action
     const state = threadDetailReducer(modifiedInitialState, action);
-    const targetComment = state.comments.find(comment => comment.id === "comment-1");
-    const ignoredComment = state.comments.find(comment => comment.id === "comment-2");
+    const targetComment = state.comments.find(
+      (comment) => comment.id === "comment-1",
+    );
+    const ignoredComment = state.comments.find(
+      (comment) => comment.id === "comment-2",
+    );
 
     // Assert
     expect(targetComment.upVotesBy).toContain("users-1");
@@ -220,9 +229,9 @@ describe('threadDetail reducer', () => {
       type: ActionType.TOGGLE_DOWNVOTE_COMMENT,
       payload: {
         userId: "users-1",
-        commentId: "comment-1"
-      }
-    }
+        commentId: "comment-1",
+      },
+    };
 
     const modifiedInitialState = {
       ...initialState,
@@ -230,16 +239,25 @@ describe('threadDetail reducer', () => {
         {
           ...initialState.comments[0],
           // 🟢 Pre-populate the opposite array!
-          upVotesBy: ["users-1", "users-2"]
+          upVotesBy: ["users-1", "users-2"],
         },
-        { id: "comment-2", content: "Second comment", upVotesBy: [], downVotesBy: []}
-      ]
+        {
+          id: "comment-2",
+          content: "Second comment",
+          upVotesBy: [],
+          downVotesBy: [],
+        },
+      ],
     };
 
     // Action
     const state = threadDetailReducer(modifiedInitialState, action);
-    const targetComment = state.comments.find(comment => comment.id === "comment-1");
-    const ignoredComment = state.comments.find(comment => comment.id === "comment-2");
+    const targetComment = state.comments.find(
+      (comment) => comment.id === "comment-1",
+    );
+    const ignoredComment = state.comments.find(
+      (comment) => comment.id === "comment-2",
+    );
 
     // Assert
     expect(targetComment.downVotesBy).toContain("users-1");
@@ -253,9 +271,9 @@ describe('threadDetail reducer', () => {
       type: ActionType.TOGGLE_NEUTRALIZEVOTE_COMMENT,
       payload: {
         userId: "users-1",
-        commentId: "comment-1"
-      }
-    }
+        commentId: "comment-1",
+      },
+    };
 
     // Action
     const state = threadDetailReducer(initialState, action);
@@ -271,9 +289,9 @@ describe('threadDetail reducer', () => {
       type: ActionType.TOGGLE_NEUTRALIZEVOTE_COMMENT,
       payload: {
         userId: "users-1",
-        commentId: "comment-1"
-      }
-    }
+        commentId: "comment-1",
+      },
+    };
 
     const modifiedInitialState = {
       ...initialState,
@@ -282,11 +300,16 @@ describe('threadDetail reducer', () => {
           ...initialState.comments[0],
           // 🟢 Pre-populate BOTH arrays
           upVotesBy: ["users-1", "users-2"],
-          downVotesBy: ["users-1", "users-2"]
+          downVotesBy: ["users-1", "users-2"],
         },
-        { id: "comment-2", content: "Second comment", upVotesBy: [], downVotesBy: []}
-      ]
-    }
+        {
+          id: "comment-2",
+          content: "Second comment",
+          upVotesBy: [],
+          downVotesBy: [],
+        },
+      ],
+    };
 
     // Action
     const state = threadDetailReducer(modifiedInitialState, action);

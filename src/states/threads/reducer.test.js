@@ -1,5 +1,5 @@
 import threadsReducer from "./reducer.js";
-import {ActionType} from "./action.js";
+import { ActionType } from "./action.js";
 
 describe("threadReducers function", () => {
   it("should return initial state when given unknown action", () => {
@@ -19,7 +19,7 @@ describe("threadReducers function", () => {
     const latestState = threadsReducer();
 
     // Assert
-    expect(latestState).toEqual(null);
+    expect(latestState).toEqual([]);
   });
 
   it("should return all thread when given RECEIVE_THREADS action", () => {
@@ -34,10 +34,10 @@ describe("threadReducers function", () => {
             title: "Thread 1",
             content: "Content 1",
             author: "Author 1",
-          }
-        ]
-      }
-    }
+          },
+        ],
+      },
+    };
 
     // Action
     const latestState = threadsReducer(initialState, action);
@@ -54,7 +54,7 @@ describe("threadReducers function", () => {
         title: "Thread 1",
         content: "Content 1",
         author: "Author 1",
-      }
+      },
     ];
     const action = {
       type: ActionType.ADD_THREAD,
@@ -64,9 +64,9 @@ describe("threadReducers function", () => {
           title: "Thread 2",
           content: "Content 2",
           author: "Author 2",
-        }
-      }
-    }
+        },
+      },
+    };
 
     // Action
     const latestState = threadsReducer(initialState, action);

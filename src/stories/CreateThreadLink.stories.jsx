@@ -1,3 +1,4 @@
+import React from "react";
 import CreateThreadLink from "../components/CreateThreadLink.jsx";
 import { MemoryRouter } from "react-router";
 

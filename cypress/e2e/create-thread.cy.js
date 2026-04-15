@@ -1,34 +1,17 @@
-describe('Create thread', () => {
+describe("Create thread", () => {
   // Create unique user
   const testUser = {
-    name: 'Thread Tester',
-    email: 'threadtester_' + Date.now() + '@gmail.com',
-    password: 'password123'
+    name: "Regy",
+    email: `regy_ci_tester@gmail.com`,
+    password: "password123",
   };
 
-  before("Register", () => {
-    cy.request({
-      method: 'POST',
-      url: 'https://forum-api.dicoding.dev/v1/register',
-      body: testUser
-    });
-  });
-
   beforeEach("Login", () => {
-    cy.request({
-      method: 'POST',
-      url: 'https://forum-api.dicoding.dev/v1/login',
-      body: {
-        email: testUser.email,
-        password: testUser.password
-      }
-    }).then((response) => {
-      const { token } = response.body.data;
-      window.localStorage.setItem('accessToken', token);
-      cy.visit('http://localhost:5173/');
-    });
-
-    cy.visit('http://localhost:5173/');
+    cy.visit("http://localhost:5173/login");
+    cy.get('[data-cy="email"]').type(testUser.email);
+    cy.get('[data-cy="password"]').type(testUser.password);
+    cy.get('[data-cy="loginButton"]').click();
+    cy.url().should('eq', 'http://localhost:5173/');
   });
 
   it("should display the create thread button, navigate to create thread page, and create a thread", () => {
@@ -37,7 +20,7 @@ describe('Create thread', () => {
 
     cy.get('[data-cy="create-thread-link"]').click();
 
-    const threadTitle = 'My Cypress Test Thread ' + Date.now();
+    const threadTitle = `My Cypress Test Thread ${Date.now()}`;
 
     cy.url().should("eq", "http://localhost:5173/threads/new");
 

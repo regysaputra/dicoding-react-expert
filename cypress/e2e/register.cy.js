@@ -1,9 +1,9 @@
-describe('Register spec', () => {
+describe("Register spec", () => {
   beforeEach(() => {
-    cy.visit('http://localhost:5173/register');
+    cy.visit("http://localhost:5173/register");
   });
 
-  it('should display register page correctly', () => {
+  it("should display register page correctly", () => {
     cy.get('[data-cy="fullName"]').should("be.visible");
     cy.get('[data-cy="email"]').should("be.visible");
     cy.get('[data-cy="password"]').should("be.visible");
@@ -35,13 +35,13 @@ describe('Register spec', () => {
 
   it("should show alert if register with email that already registered", () => {
     // Intercept the real API call and FORCE it to fail
-    cy.intercept('POST', '**/register', {
+    cy.intercept("POST", "**/register", {
       statusCode: 400,
       body: {
-        status: 'fail',
-        message: 'email is already taken'
-      }
-    }).as('registerFailure');
+        status: "fail",
+        message: "email is already taken",
+      },
+    }).as("registerFailure");
 
     // Fill the form
     cy.get('[data-cy="fullName"]').type("John Doe");
@@ -52,7 +52,7 @@ describe('Register spec', () => {
     // Submit the form
     cy.get('[data-cy="registerButton"]').click();
 
-    cy.wait('@registerFailure');
+    cy.wait("@registerFailure");
 
     // Navigate to login page
     cy.on("window:alert", (text) => {
@@ -76,4 +76,4 @@ describe('Register spec', () => {
     // Verify the browser actually redirected to the login route
     cy.url().should("include", "/login");
   });
-})
+});

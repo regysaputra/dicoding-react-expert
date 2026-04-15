@@ -1,3 +1,4 @@
+import React from "react";
 import CommentList from "../components/CommentList.jsx";
 import { Provider } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
@@ -50,7 +51,8 @@ Default.args = {
         owner: {
           id: "user-3",
           name: "Bob Smith",
-          avatar: "https://ui-avatars.com/api/?name=Bob+Smith&background=random",
+          avatar:
+            "https://ui-avatars.com/api/?name=Bob+Smith&background=random",
         },
         upVotesBy: ["user-1"],
         downVotesBy: [],

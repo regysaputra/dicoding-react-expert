@@ -1,18 +1,41 @@
 name: Continuous Integration
 on:
+  push:
+    branches:
+      - main
   pull_request:
     branches:
       - main
+
 jobs:
   automation-test-job:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v2
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v2
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Run Jest Tests
+        run: npm run test
+
+      - name: Cypress run
+        uses: cypress-io/github-action@v6
         with:
-          node-version: ${{ matrix.node-version }}
-      - name: npm install and test
-        run: |
-          npm install
-          npm run ci:test
+          # Tell it how to boot your Vite server
+          start: npm run dev
+
+          # Tell it where to wait for Vite to be ready
+          wait-on: 'http://localhost:5173'
+
+          # Send the video and analytics to the cloud
+          record: true
+          parallel: false
+
+        env:
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+
+          # GitHub provides this token automatically
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
