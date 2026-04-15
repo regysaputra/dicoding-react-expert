@@ -5,18 +5,6 @@ describe("Register spec", () => {
     password: "password123",
   };
 
-  // before(() => {
-  //   // Seed db
-  //   cy.request(
-  //     "POST",
-  //     "https://forum-api.dicoding.dev/v1/register",
-  //     testUser,
-  //   ).then((response) => {
-  //     // Optional: Verify the database actually created the user
-  //     expect(response.status).to.eq(201);
-  //   });
-  // });
-
   beforeEach(() => {
     cy.visit("http://localhost:5173/login");
   });

@@ -6,50 +6,32 @@ describe("Create comment", () => {
     password: "password123",
   };
 
-  // before("Register", () => {
-  //   cy.request({
-  //     method: "POST",
-  //     url: "https://forum-api.dicoding.dev/v1/register",
-  //     body: testUser,
-  //   });
-  // });
+  beforeEach("Login and Create Thread", () => {
+    // ===================== LOGIN ================================
+    cy.visit("http://localhost:5173/login");
+    cy.get('[data-cy="email"]').type(testUser.email);
+    cy.get('[data-cy="password"]').type(testUser.password);
+    cy.get('[data-cy="loginButton"]').click();
+    cy.url().should('eq', 'http://localhost:5173/');
 
-  beforeEach("Login", () => {
-    cy.request({
-      method: "POST",
-      url: "https://forum-api.dicoding.dev/v1/login",
-      headers: {
-        "Origin": "http://localhost:5173",
-        "Referer": "http://localhost:5173/"
-      },
-      body: {
-        email: testUser.email,
-        password: testUser.password,
-      },
-    }).then((response) => {
-      const { token } = response.body.data;
-      window.localStorage.setItem("accessToken", token);
+    // ====================== CREATE THREAD ========================
+    cy.get('[data-cy="create-thread-link"]').click();
 
-      cy.request({
-        method: "POST",
-        url: "https://forum-api.dicoding.dev/v1/threads",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        body: {
-          title: `My Cypress Test Thread ${Date.now()}`,
-          body: "This is a test thread.",
-          category: "Testing",
-        },
-      }).then(() => {
-        cy.visit("http://localhost:5173/");
-      });
-    });
+    const threadTitle = `My Cypress Test Thread ${Date.now()}`;
+
+    cy.url().should("eq", "http://localhost:5173/threads/new");
+
+    cy.get('[data-cy="thread-title-input"]').type(threadTitle);
+    cy.get('[data-cy="thread-category-input"]').type("Testing");
+    cy.get("[data-cy='thread-body-input']").type("This is a test thread.");
+    cy.get("[data-cy='thread-submit-button']").click();
+    cy.url().should("eq", "http://localhost:5173/");
+    cy.contains(threadTitle).first().click();
+    cy.intercept('GET', '**/threads/*').as('getThreadDetail');
+    cy.wait('@getThreadDetail');
   });
 
-  it("should navigate to a thread detail, post a comment, and render it", () => {
-    cy.get('[data-cy="thread-detail-link"]').first().click();
-
+  it("post a comment, and render it", () => {
     cy.url().should("include", "/threads/");
 
     // Create and type the comment
