@@ -11,7 +11,7 @@ describe("Voting", () => {
     cy.get('[data-cy="email"]').type(testUser.email);
     cy.get('[data-cy="password"]').type(testUser.password);
     cy.get('[data-cy="loginButton"]').click();
-    cy.url().should('eq', 'http://localhost:5173/');
+    cy.url().should("eq", "http://localhost:5173/");
 
     // ====================== CREATE THREAD ========================
     cy.get('[data-cy="create-thread-link"]').click();
@@ -31,8 +31,8 @@ describe("Voting", () => {
     // STEP 3: HUMAN COMMENT CREATION
     // ==========================================
     // Wait for the thread detail page to load
-    cy.intercept('GET', '**/threads/*').as('getThreadDetail');
-    cy.wait('@getThreadDetail');
+    cy.intercept("GET", "**/threads/*").as("getThreadDetail");
+    cy.wait("@getThreadDetail");
 
     const commentText = `This is an automated Cypress comment! ${Date.now()}`;
     cy.get('[data-cy="comment-content-input"]').type(commentText);
@@ -48,7 +48,9 @@ describe("Voting", () => {
     cy.intercept("POST", "**/threads/*/neutral-vote").as("neutralvoteCall");
     cy.intercept("POST", "**/comments/**/up-vote").as("commentUpvoteCall");
     cy.intercept("POST", "**/comments/**/down-vote").as("commentDownvoteCall");
-    cy.intercept("POST", "**/comments/**/neutral-vote").as("commentNeutralvoteCall");
+    cy.intercept("POST", "**/comments/**/neutral-vote").as(
+      "commentNeutralvoteCall",
+    );
     // cy.wait("@getThreadDetail");
   });
 

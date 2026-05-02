@@ -28,7 +28,7 @@ jobs:
           start: npm run dev
 
           # Tell it where to wait for Vite to be ready
-          wait-on: 'http://localhost:5173'
+          wait-on: "http://localhost:5173"
 
           # Send the video and analytics to the cloud
           record: true

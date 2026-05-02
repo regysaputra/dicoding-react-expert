@@ -11,7 +11,7 @@ describe("Create thread", () => {
     cy.get('[data-cy="email"]').type(testUser.email);
     cy.get('[data-cy="password"]').type(testUser.password);
     cy.get('[data-cy="loginButton"]').click();
-    cy.url().should('eq', 'http://localhost:5173/');
+    cy.url().should("eq", "http://localhost:5173/");
   });
 
   it("should display the create thread button, navigate to create thread page, and create a thread", () => {
